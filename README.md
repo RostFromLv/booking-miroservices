@@ -1,7 +1,7 @@
 # booking-miroservices
 Initial version
 
-Hello it is my microservice applcation.
+Hello it is my microservice application.
 
 Before start throw docker-compose you need to build install next modules:
 - booking-common-abstract-service
