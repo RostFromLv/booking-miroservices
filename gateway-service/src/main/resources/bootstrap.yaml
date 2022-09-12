@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            - address-service:
+                uri: ${ADDRESS_SERVICE_URI:http://localhost:8081}
+            - users-service:
+                uri: ${USERS_SERVICE_URI:http://localhost:8082}
+            - hotels-service:
+                uri: ${HOTELS_SERVICE_URI:http://localhost:8083}
+            - orders-service:
+                uri: ${ORDERS_SERVICE_URI:http://localhost:8084}
+            - payment-service:
+                uri: ${PAYMENTS_SERVICE_URI:http://localhost:8085}

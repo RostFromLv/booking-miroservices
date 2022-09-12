@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "userId": 2,
+  "hotelId": 5,
+  "hotelRoomId": 7,
+  "fromDate": 8,
+  "endDate": 100,
+  "status": "PENDING",
+  "createdAt": 100,
+  "expiredAt": 500
+}

@@ -1,0 +1,57 @@
+#Server container properties
+server:
+  port: 8083
+
+#Spring properties
+spring:
+  sleuth:
+    enabled: true
+    sampler:
+      probability: 1.0
+  zipkin:
+    enabled: true
+    base-url: ${ZIPKIN_HOST:http://localhost:9411/}
+    service:
+      name: hotels-service
+    sender:
+      type: web
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  application:
+    name: booking-api-hotels
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db.migration
+    url: ${spring.datasource.url}
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hotels
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            address-service:
+              - uri: ${ADDRESS_SERVICE_URI:http://localhost:8081}
+#Actuator props
+management:
+  endpoint:
+    health:
+      show-details: ALWAYS
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+#Logger props
+logging:
+  level:
+    root: info

@@ -1,0 +1,1 @@
+alter table hotel_rooms DROP COLUMN IF EXISTS status;

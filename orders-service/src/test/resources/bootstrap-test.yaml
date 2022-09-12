@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: orders-service
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            - address-service:
+                uri: http://locahost:8081
+            - users-service:
+                uri: http://localhost:8082
+            - hotels-service:
+                uri: http://localhost:8083
+            - orders-service:
+                uri: http://locahost:8084
+    loadbalancer:
+      enabled: true
