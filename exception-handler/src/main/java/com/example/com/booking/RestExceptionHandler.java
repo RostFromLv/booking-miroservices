@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
@@ -26,6 +27,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
+  @ExceptionHandler(NoSuchElementException.class)
+  protected ResponseEntity<Object> handleNoSuchElementException(
+      final NoSuchElementException ex, WebRequest request) {
+    return handleInternal(ex, HttpStatus.NOT_FOUND, request);
+  }
   @ExceptionHandler(DataIntegrityViolationException.class)
   protected ResponseEntity<Object> handleDataIntegrityViolationException(
         final DataIntegrityViolationException ex, WebRequest request) {
