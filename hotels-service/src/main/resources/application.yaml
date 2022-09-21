@@ -42,6 +42,7 @@ spring:
           instances:
             address-service:
               - uri: ${ADDRESS_SERVICE_URI:http://localhost:8081}
+
 #Actuator props
 management:
   endpoint:
@@ -55,3 +56,9 @@ management:
 logging:
   level:
     root: info
+
+
+
+feign:
+  circuitbreaker:
+    enabled: true

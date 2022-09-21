@@ -60,23 +60,23 @@ services:
       - spring-network
     links:
       - gateway
-# USER
-  user-service:
-    container_name: users-service
-    build:
-      context: ../users-service
-      dockerfile: Dockerfile
-    ports:
-      - "8082:8082"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/users
-      ZIPKIN_HOST: http://zipkin:9411
-    depends_on:
-      - postgres
-    networks:
-      - spring-network
-    links:
-      - gateway
+## USER
+#  user-service:
+#    container_name: users-service
+#    build:
+#      context: ../users-service
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8082:8082"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/users
+#      ZIPKIN_HOST: http://zipkin:9411
+#    depends_on:
+#      - postgres
+#    networks:
+#      - spring-network
+#    links:
+#      - gateway
 # ADDRESS
   address-service:
     container_name: address-service
@@ -95,46 +95,46 @@ services:
     links:
       - zipkin
       - gateway
-#ORDERS
-  orders-service:
-    container_name: orders-service
-    build:
-      context: ../orders-service
-      dockerfile: Dockerfile
-    ports:
-      - "8084:8084"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/orders
-      ZIPKIN_HOST: http://zipkin:9411
-      USERS_SERVICE_URI: http://users-service:8082
-      HOTELS_SERVICE_URI: http://hotels-service:8083
-      PAYMENT_SERVICE_URI: http://payments-service:8085
-    depends_on:
-      - postgres
-      - gateway
-    networks:
-      - spring-network
+##ORDERS
+#  orders-service:
+#    container_name: orders-service
+#    build:
+#      context: ../orders-service
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8084:8084"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/orders
+#      ZIPKIN_HOST: http://zipkin:9411
+#      USERS_SERVICE_URI: http://users-service:8082
+#      HOTELS_SERVICE_URI: http://hotels-service:8083
+#      PAYMENT_SERVICE_URI: http://payments-service:8085
+#    depends_on:
+#      - postgres
+#      - gateway
+#    networks:
+#      - spring-network
 #    links:
 #      - gateway
-#Payment
-  payments-service:
-    container_name: payments-service
-    build:
-      context: ../payment-service
-      dockerfile: Dockerfile
-    ports:
-      - "8085:8085"
-    environment:
-      ZIPKIN_HOST: http://zipkin:9411
-      REDIS_HOST: redis-service
-      REDIS_PORT: 6379
-    depends_on:
-      - redis-service
-    links:
-      - zipkin
-      - gateway
-    networks:
-      - spring-network
+##Payment
+#  payments-service:
+#    container_name: payments-service
+#    build:
+#      context: ../payment-service
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8085:8085"
+#    environment:
+#      ZIPKIN_HOST: http://zipkin:9411
+#      REDIS_HOST: redis-service
+#      REDIS_PORT: 6379
+#    depends_on:
+#      - redis-service
+#    links:
+#      - zipkin
+#      - gateway
+#    networks:
+#      - spring-network
 
  #Redis
   redis-service:

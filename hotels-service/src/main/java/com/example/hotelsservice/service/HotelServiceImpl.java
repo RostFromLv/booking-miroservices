@@ -23,10 +23,11 @@ public class HotelServiceImpl extends AbstractDataService<Integer, Hotel, HotelD
 
   @Override
   public HotelDto create(HotelDto target) {
-    Assert.isNull(target.getId());
+    Integer id  = target.getId();
+    Assert.isNull(id,"Wrong id: " + id);
 
     Integer addressId = target.getAddressId();
-    Assert.notNull(addressClient.getById(addressId));
+    Assert.notNull(addressClient.findById(addressId),"Wrong address id :" +addressId);
     return super.create(target);
   }
 }

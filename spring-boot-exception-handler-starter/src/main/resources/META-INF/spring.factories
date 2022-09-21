@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.example.springbootexceptionhandlerstarter.RestExceptionHandler
+  com.example.springbootexceptionhandlerstarter.ConfigClass
