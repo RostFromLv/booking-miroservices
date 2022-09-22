@@ -61,3 +61,7 @@ management:
 logging:
   level:
     root: info
+
+feign:
+  circuitbreaker:
+    enabled: true

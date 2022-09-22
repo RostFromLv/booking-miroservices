@@ -4,9 +4,11 @@ import com.example.commondto.common.CardDto;
 import com.example.commondto.common.PaymentRequest;
 import com.example.commondto.common.PaymentResponse;
 import com.example.paymentservice.service.CardBalanceService;
+import com.example.paymentservice.service.CardOperationException;
 import com.example.paymentservice.service.VisaPaymentService;
 import java.util.UUID;
-import org.assertj.core.api.Assertions;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,46 +48,36 @@ public class VisaPaymentServiceUT {
   }
 
   @Test
-  void doPaymentWithCorrectData_ShouldReturn_SuccessPayment() {
+  void doPaymentWithCorrectData_ShouldReturn_SuccessPayment() throws CardOperationException {
 
     paymentResponse.setSuccess(true);
 
     PaymentResponse actual = paymentService.doPayment(request);
 
-    Assertions.assertThat(actual)
+    org.assertj.core.api.Assertions.assertThat(actual)
           .usingRecursiveComparison()
           .ignoringFields("transactionId", "timestamp")
           .isEqualTo(paymentResponse);
   }
 
   @Test
-  void doPaymentWithExpiredCardDate_ShouldReturn_UnsuccessfulPayment_WithExpiredDateMessage() {
+  void doPaymentWithExpiredCardDate_ShouldReturn_UnsuccessfulPayment_WithExpiredDateMessage() throws CardOperationException {
     request.getCardDto().setExpirationDate(500L);
-
-    PaymentResponse actual = paymentService.doPayment(request);
-
-    org.junit.jupiter.api.Assertions.assertTrue(actual.getErrors().size() == 1);
-    org.junit.jupiter.api.Assertions.assertTrue(actual.getSuccess().equals(false));
+    Assertions.assertThrows(CardOperationException.class,()->paymentService.doPayment(request));
   }
 
   @Test
-  void doPaymentWithWrongCcv2Code_ShouldReturn_UnsuccessfulPayment_WithWrongCcv2CodeMessage() {
+  void doPaymentWithWrongCcv2Code_ShouldReturn_UnsuccessfulPayment_WithWrongCcv2CodeMessage() throws CardOperationException {
     request.getCardDto().setCcv2("999");
-    PaymentResponse actual = paymentService.doPayment(request);
-    org.junit.jupiter.api.Assertions.assertTrue(actual.getSuccess().equals(false));
-    org.junit.jupiter.api.Assertions.assertTrue(actual.getErrors().size() == 1);
+    Assertions.assertThrows(CardOperationException.class,()->paymentService.doPayment(request));
   }
 
   @Test
-  void dPaymentWithExpiredDate_and_WrongCcv2Code_ShouldReturn_UnsuccessfulPayment_WithMultipleMessages() {
+  void dPaymentWithExpiredDate_and_WrongCcv2Code_ShouldReturn_UnsuccessfulPayment_WithMultipleMessages() throws CardOperationException {
     request.getCardDto().setExpirationDate(500L);
     request.getCardDto().setCcv2("999");
 
-    PaymentResponse actual = paymentService.doPayment(request);
-
-    org.junit.jupiter.api.Assertions.assertTrue(actual.getSuccess().equals(false));
-    org.junit.jupiter.api.Assertions.assertTrue(actual.getErrors().size() == 2);
-
+    Assertions.assertThrows(CardOperationException.class,()->paymentService.doPayment(request));
   }
 
 }

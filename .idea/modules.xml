@@ -4,16 +4,25 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/address-service/address-service.iml" filepath="$PROJECT_DIR$/address-service/address-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/banking-e2e/banking-e2e.iml" filepath="$PROJECT_DIR$/banking-e2e/banking-e2e.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hotels-service/booking-api-hotel.iml" filepath="$PROJECT_DIR$/hotels-service/booking-api-hotel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gateway-service/booking-app-router.iml" filepath="$PROJECT_DIR$/gateway-service/booking-app-router.iml" />
+      <module fileurl="file://$PROJECT_DIR$/users-service/booking-app-user.iml" filepath="$PROJECT_DIR$/users-service/booking-app-user.iml" />
       <module fileurl="file://$PROJECT_DIR$/booking-common-abstract-service/booking-common-abstract-service.iml" filepath="$PROJECT_DIR$/booking-common-abstract-service/booking-common-abstract-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/booking-miroservices.iml" filepath="$PROJECT_DIR$/.idea/booking-miroservices.iml" />
+      <module fileurl="file://$PROJECT_DIR$/booking-common-abstract-service/common-abstract-service.iml" filepath="$PROJECT_DIR$/booking-common-abstract-service/common-abstract-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/common-dependencies/common-dependencies.iml" filepath="$PROJECT_DIR$/common-dependencies/common-dependencies.iml" />
       <module fileurl="file://$PROJECT_DIR$/common-dto/common-dto.iml" filepath="$PROJECT_DIR$/common-dto/common-dto.iml" />
       <module fileurl="file://$PROJECT_DIR$/exception-handler/exception-handler.iml" filepath="$PROJECT_DIR$/exception-handler/exception-handler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/spring-boot-exception-handler-starter/exception-handler-starter.iml" filepath="$PROJECT_DIR$/spring-boot-exception-handler-starter/exception-handler-starter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/exception-handler/exception-hendler.iml" filepath="$PROJECT_DIR$/exception-handler/exception-hendler.iml" />
       <module fileurl="file://$PROJECT_DIR$/gateway-service/gateway-service.iml" filepath="$PROJECT_DIR$/gateway-service/gateway-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/hotels-service/hotels-service.iml" filepath="$PROJECT_DIR$/hotels-service/hotels-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/orders-service/orders.iml" filepath="$PROJECT_DIR$/orders-service/orders.iml" />
       <module fileurl="file://$PROJECT_DIR$/orders-service/orders-service.iml" filepath="$PROJECT_DIR$/orders-service/orders-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/payment-service/payment-service.iml" filepath="$PROJECT_DIR$/payment-service/payment-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/payment-service/payments.iml" filepath="$PROJECT_DIR$/payment-service/payments.iml" />
       <module fileurl="file://$PROJECT_DIR$/spring-boot-exception-handler-starter/spring-boot-exception-handler-starter.iml" filepath="$PROJECT_DIR$/spring-boot-exception-handler-starter/spring-boot-exception-handler-starter.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common-dependencies/spring-dependencies.iml" filepath="$PROJECT_DIR$/common-dependencies/spring-dependencies.iml" />
       <module fileurl="file://$PROJECT_DIR$/users-service/users-service.iml" filepath="$PROJECT_DIR$/users-service/users-service.iml" />
     </modules>
   </component>

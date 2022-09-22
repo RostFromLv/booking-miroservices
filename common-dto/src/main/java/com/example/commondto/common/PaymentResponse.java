@@ -12,14 +12,5 @@ public class PaymentResponse implements Convertible {
   private UUID transactionId;
   private Long timestamp;
   private Boolean success;
-  private Set<String> errors = new HashSet<>();
-
-  public final boolean hasError() {
-    return !errors.isEmpty();
-  }
-
-  public final void addError(String message) {
-    errors.add(message);
-  }
 
 }
