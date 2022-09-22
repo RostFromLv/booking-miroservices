@@ -2,37 +2,55 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="orders-service" />
+        <module name="booking-common-abstract-service" />
+        <module name="address-service" />
+        <module name="users-service" />
+        <module name="exception-handler-starter" />
+        <module name="payments" />
+        <module name="booking-app-router" />
+        <module name="common-abstract-service" />
+        <module name="spring-boot-exception-handler-starter" />
         <module name="exception-handler" />
         <module name="hotels-service" />
-        <module name="address-service" />
-        <module name="booking-common-abstract-service" />
+        <module name="booking-app-user" />
         <module name="payment-service" />
-        <module name="users-service" />
         <module name="common-dto" />
         <module name="gateway-service" />
+        <module name="exception-hendler" />
         <module name="spring-common-dependencies" />
+        <module name="orders" />
         <module name="banking-e2e" />
-        <module name="spring-boot-exception-handler-starter" />
+        <module name="booking-api-hotel" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="address-service" target="11" />
       <module name="banking-e2e" target="11" />
+      <module name="booking-api-hotel" target="1.8" />
+      <module name="booking-app-router" target="1.8" />
+      <module name="booking-app-user" target="1.8" />
       <module name="booking-common-abstract-service" target="11" />
+      <module name="common-abstract-service" target="11" />
       <module name="common-dependencies" target="1.8" />
       <module name="common-dto" target="1.8" />
       <module name="exception-handler" target="1.8" />
+      <module name="exception-handler-starter" target="1.8" />
+      <module name="exception-hendler" target="1.8" />
       <module name="gateway-service" target="1.8" />
       <module name="hotels-service" target="1.8" />
+      <module name="orders" target="11" />
       <module name="orders-service" target="11" />
       <module name="payment-service" target="11" />
+      <module name="payments" target="11" />
       <module name="spring-boot-exception-handler-starter" target="1.8" />
       <module name="spring-common-dependencies" target="11" />
+      <module name="spring-dependencies" target="1.8" />
       <module name="users-service" target="1.8" />
     </bytecodeTargetLevel>
   </component>
@@ -40,14 +58,22 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="address-service" options="-parameters" />
       <module name="banking-e2e" options="-parameters" />
+      <module name="booking-api-hotel" options="-parameters" />
+      <module name="booking-app-router" options="-parameters" />
+      <module name="booking-app-user" options="-parameters" />
       <module name="booking-common-abstract-service" options="-parameters" />
+      <module name="common-abstract-service" options="-parameters" />
       <module name="common-dependencies" options="-parameters" />
       <module name="common-dto" options="-parameters" />
       <module name="exception-handler" options="-parameters" />
+      <module name="exception-handler-starter" options="-parameters" />
+      <module name="exception-hendler" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
       <module name="hotels-service" options="-parameters" />
+      <module name="orders" options="-parameters" />
       <module name="orders-service" options="-parameters" />
       <module name="payment-service" options="-parameters" />
+      <module name="payments" options="-parameters" />
       <module name="spring-boot-exception-handler-starter" options="-parameters" />
       <module name="spring-common-dependencies" options="-parameters" />
       <module name="users-service" options="-parameters" />

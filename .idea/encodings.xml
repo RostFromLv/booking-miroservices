@@ -13,7 +13,6 @@
     <file url="file://$PROJECT_DIR$/orders-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/payment-service/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/spring-boot-exception-handler-starter/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/spring-comon-dependencies/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/users-service/src/main/java" charset="UTF-8" />
   </component>
 </project>

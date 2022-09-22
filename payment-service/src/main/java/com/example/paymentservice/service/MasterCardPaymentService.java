@@ -19,23 +19,23 @@ public class MasterCardPaymentService implements PaymentService {
   }
 
   @Override
-  public PaymentResponse doPayment(PaymentRequest request)  {
+  public PaymentResponse doPayment(PaymentRequest request) throws CardOperationException {
     PaymentResponse response =
         new PaymentResponse();
     CardDto card = request.getCardDto();
 
     if (card.getExpirationDate()<500){
-      response.addError("Your card expired");
+      throw new CardOperationException("Your card expired");
     }
     if (!card.getCcv2().equals("123")){
-      response.addError("Wrong ccv2 code");
+      throw new CardOperationException("Wrong ccv2 code");
     }
     try {
       cardBalanceService.withdraw(card.getNumber(), request.getPrice());
     } catch (CardOperationException e) {
-      response.addError(e.getMessage());
+      throw new CardOperationException(e.getMessage());
     }
-    response.setSuccess(!response.hasError());
+    response.setSuccess(true);
     response.setTimestamp(System.currentTimeMillis());
     response.setTransactionId(UUID.randomUUID());
     log.trace("VISA| Withdraw transaction by card "+ card.getNumber());
