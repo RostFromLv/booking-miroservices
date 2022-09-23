@@ -32,6 +32,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
       final NoSuchElementException ex, WebRequest request) {
     return handleInternal(ex, HttpStatus.NOT_FOUND, request);
   }
+
+  @ExceptionHandler(UnsupportedOperationException.class)
+  protected ResponseEntity<Object> handleUnsupportedOperationException(
+      final UnsupportedOperationException ex, WebRequest request) {
+    return handleInternal(ex, HttpStatus.BAD_REQUEST, request);
+  }
   @ExceptionHandler(DataIntegrityViolationException.class)
   protected ResponseEntity<Object> handleDataIntegrityViolationException(
         final DataIntegrityViolationException ex, WebRequest request) {

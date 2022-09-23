@@ -25,6 +25,6 @@ class UserFallback implements UsersFeignClient {
 
   @Override
   public Optional<UserDto> getById(Integer id) {
-    throw new EntityNotFoundException(String.format("There is no user with id: %s", id));
+    throw new EntityNotFoundException(String.format("Cannot find user with id: %s", id));
   }
 }

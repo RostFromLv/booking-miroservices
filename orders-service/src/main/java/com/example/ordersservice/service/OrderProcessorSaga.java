@@ -4,6 +4,7 @@ import com.example.commondto.common.OrderDto;
 import com.example.commondto.common.PaymentRequest;
 import com.example.commondto.common.PaymentResponse;
 import com.example.commondto.common.ReservationDto;
+import com.example.commondto.common.RoomPriceDto;
 import com.example.commondto.common.Status;
 import feign.FeignException;
 import java.time.Instant;
@@ -57,8 +58,14 @@ public class OrderProcessorSaga implements OrderProcessor {
 
       reservation = reserveHotelRoom(toReservation(order));
 
-      Double defaultPricePerDay = hotelClient.getPrice(
-            hotelClient.getRoomById(order.getHotelRoomId()).getRoomPriceId()).getPrice();
+      RoomPriceDto roomPriceDto = hotelClient.getPrice(hotelClient.getRoomById(order.getHotelRoomId()).getRoomPriceId());
+      Double defaultPricePerDay;
+
+      if (roomPriceDto.getId()==0){
+        defaultPricePerDay = roomPriceDto.getDefaultPrice();
+      }else {
+       defaultPricePerDay = roomPriceDto.getPrice();
+      }
 
       Double finishPrice = calculateFinishPrice(defaultPricePerDay, getDayPeriod(order.getFromDate(), order.getEndDate()));
 

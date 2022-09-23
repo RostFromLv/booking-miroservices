@@ -42,7 +42,7 @@ public class AddressControllerV1 {
 
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public AddressDto getById(@PathVariable final Integer id) {
+  public AddressDto getById(@PathVariable final Integer id) throws InterruptedException {
     return addressService.findById(id).get();
   }
 
