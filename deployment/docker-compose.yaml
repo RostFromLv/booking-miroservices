@@ -78,23 +78,23 @@ services:
 #    links:
 #      - gateway
 # ADDRESS
-  address-service:
-    container_name: address-service
-    build:
-      context: ../address-service
-      dockerfile: Dockerfile
-    ports:
-      - "8081:8081"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/booking
-      ZIPKIN_HOST: http://zipkin:9411
-    depends_on:
-      - postgres
-    networks:
-      - spring-network
-    links:
-      - zipkin
-      - gateway
+#  address-service:
+#    container_name: address-service
+#    build:
+#      context: ../address-service
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8081:8081"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/booking
+#      ZIPKIN_HOST: http://zipkin:9411
+#    depends_on:
+#      - postgres
+#    networks:
+#      - spring-network
+#    links:
+#      - zipkin
+#      - gateway
 ##ORDERS
 #  orders-service:
 #    container_name: orders-service
@@ -135,7 +135,6 @@ services:
 #      - gateway
 #    networks:
 #      - spring-network
-
  #Redis
   redis-service:
     container_name: redis-service

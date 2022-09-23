@@ -3,6 +3,7 @@ package com.example.ordersservice.service;
 import com.example.commondto.common.HotelRoomDto;
 import com.example.commondto.common.ReservationDto;
 import com.example.commondto.common.RoomPriceDto;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,6 @@ public interface HotelFeignClient {
   String hotelUrl ="/api/v1/hotels";
   String reservationUri = hotelUrl+"/reservations";
 
-  //Reservation endpoints
   @PostMapping(reservationUri)
   ReservationDto createReservation(@RequestBody ReservationDto reservationDto);
 
@@ -38,22 +38,28 @@ class HotelFallback implements HotelFeignClient{
 
   @Override
   public ReservationDto createReservation(ReservationDto reservationDto) {
-    return null;
+    throw new UnsupportedOperationException(String.format("Cannot create reservation: %s .Check your data.Check available to reserve for picked dates",reservationDto));
   }
 
   @Override
   public void deleteReservation(Integer id) {
-
+    throw new UnsupportedOperationException(String.format("Cannot delete reservation with id : %s . Check your data.",id));
   }
 
   @Override
   public HotelRoomDto getRoomById(Integer roomId) {
-    return null;
+    throw new EntityNotFoundException(String.format("Cannot find room with id: %s",roomId));
   }
 
   @Override
   public RoomPriceDto getPrice(Integer id) {
-
-    return null;
+    RoomPriceDto roomPriceDto = new RoomPriceDto();
+    roomPriceDto.setPrice(500d);//for example the lowest price for any room
+                                // Also can create the script with default price for each type of room and assign default price to ever
+    roomPriceDto.setDefaultPrice(450d);
+    roomPriceDto.setId(0);
+    roomPriceDto.setStartDate(null);
+    roomPriceDto.setEndDate(null);
+    return roomPriceDto;
   }
 }
