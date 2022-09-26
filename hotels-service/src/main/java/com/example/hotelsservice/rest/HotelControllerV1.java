@@ -10,8 +10,10 @@ import com.example.hotelsservice.service.HotelRoomsServiceImpl;
 import com.example.hotelsservice.service.HotelService;
 import com.example.hotelsservice.service.HotelServiceImpl;
 import com.example.hotelsservice.service.RoomPriceService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import java.util.Collection;
 import java.util.List;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -48,6 +50,7 @@ public class HotelControllerV1 {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
+  @CircuitBreaker(name = "hotelBreaker",fallbackMethod = "createHotelCB")
   public HotelDto createHotel(@RequestBody @Validated(value = Groups.Create.class) HotelDto creatingDto) {
     return hotelService.create(creatingDto);
   }
@@ -157,4 +160,7 @@ public class HotelControllerV1 {
     roomPriceService.deleteAll();
   }
 
+  public HotelDto createHotelCB(Exception e) {
+    throw new EntityNotFoundException("Cant create hotel. Check your address id.");
+  }
 }

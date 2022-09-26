@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 @Primary
-@FeignClient(name = "address-service",fallback = AddressFallback.class)
+@FeignClient(name = "address-service")
 public interface AddressFeignClient {
 
   String addressUri = "api/v1/addresses";
@@ -19,12 +19,4 @@ public interface AddressFeignClient {
 
 }
 
-@Component
-class AddressFallback implements AddressFeignClient {
 
-  @Override
-  public AddressDto findById(Integer id) {
-    throw new EntityNotFoundException("No address found with id : " + id);
-  }
-
-}

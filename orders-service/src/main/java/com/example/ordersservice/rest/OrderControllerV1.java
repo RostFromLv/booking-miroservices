@@ -5,7 +5,11 @@ import com.example.commondto.common.OrderDto;
 import com.example.ordersservice.service.OrderProcessor;
 import com.example.ordersservice.service.OrderService;
 import com.example.ordersservice.service.OrderServiceImpl;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import java.util.Collection;
+import javax.persistence.EntityExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -28,6 +32,8 @@ public class OrderControllerV1 {
 
   private final OrderService orderService;
   private final OrderProcessor orderProcessor;
+  private final String orderCircuitBreaker = "orderCircuitBreaker";
+  private final String fallbackMethodName = "processFallbackCB";
 
   @Autowired
   public OrderControllerV1(OrderServiceImpl orderService, OrderProcessor orderProcessor) {
@@ -43,7 +49,10 @@ public class OrderControllerV1 {
 
   @PostMapping("/payments")
   @ResponseStatus(HttpStatus.OK)
-  OrderDto doPayment(@RequestBody OrderDto orderDto){
+  @CircuitBreaker(name = orderCircuitBreaker, fallbackMethod = fallbackMethodName)
+  @Retry(name = orderCircuitBreaker,fallbackMethod = fallbackMethodName)
+  @RateLimiter(name = orderCircuitBreaker,fallbackMethod = fallbackMethodName)
+  OrderDto doPayment(@RequestBody OrderDto orderDto) {
     return orderProcessor.process(orderDto);
   }
 
@@ -61,14 +70,17 @@ public class OrderControllerV1 {
 
   @PutMapping
   @ResponseStatus(HttpStatus.OK)
-  OrderDto update(@RequestBody OrderDto orderDto){
+  OrderDto update(@RequestBody OrderDto orderDto) {
     return orderService.update(orderDto, orderDto.getId());
   }
 
-
   @DeleteMapping
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteAllOrders(){
+  public void deleteAllOrders() {
     orderService.deleteAll();
+  }
+
+  OrderDto processFallbackCB(Exception e) {
+    throw new EntityExistsException(e.getMessage());
   }
 }

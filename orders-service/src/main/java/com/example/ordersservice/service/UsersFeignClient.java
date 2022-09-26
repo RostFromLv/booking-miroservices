@@ -11,7 +11,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Primary
-@FeignClient(name = "users-service", fallback = UserFallback.class)
+@FeignClient(name = "users-service")
 public interface UsersFeignClient {
 
   String addressUri = "/api/v1/users";
@@ -19,12 +19,4 @@ public interface UsersFeignClient {
   @GetMapping(addressUri + "/{id}")
   Optional<UserDto> getById(@PathVariable Integer id);
 
-}
-@Component
-class UserFallback implements UsersFeignClient {
-
-  @Override
-  public Optional<UserDto> getById(Integer id) {
-    throw new EntityNotFoundException(String.format("Cannot find user with id: %s", id));
-  }
 }

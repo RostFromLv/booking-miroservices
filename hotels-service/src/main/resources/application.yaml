@@ -52,13 +52,26 @@ management:
     web:
       exposure:
         include: '*'
+  health:
+    circuitbreakers:
+      enabled: true
 #Logger props
 logging:
   level:
     root: info
-
-
-
 feign:
   circuitbreaker:
     enabled: true
+resilience4j:
+  circuitbreaker:
+    instances:
+      hotelBreaker:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 60
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
