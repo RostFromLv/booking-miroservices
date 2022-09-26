@@ -35,6 +35,8 @@ public class AddressControllerV1 {
 
   private final AddressService addressService;
 
+  private final String addressServiceCB = "addressService";
+
   @Autowired
   public AddressControllerV1(AddressServiceImpl addressService) {
     this.addressService = addressService;

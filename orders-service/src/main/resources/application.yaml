@@ -56,12 +56,41 @@ management:
     web:
       exposure:
         include: '*'
+  health:
+    circuitbreakers:
+      enabled: true
 
 #Logger props
 logging:
   level:
     root: info
-
 feign:
   circuitbreaker:
     enabled: true
+resilience4j:
+  circuitbreaker:
+    instances:
+      orderCircuitBreaker:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 60
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 3s
+        permittedNumberOfCallsInHalfOpenState: 5
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+  retry:
+    instances:
+      orderCircuitBreaker:
+        registerHealthIndicator: true
+        maxRetryAttempts: 3
+        waitDuration: 2s
+        slowCallRateThreshold: 150
+  ratelimiter:
+    instances:
+      orderCircuitBreaker:
+        registerHealthIndicator: false
+        limitForPeriod: 5
+        limitRefreshPeriod: 50
+        timeoutDuration: 3s
