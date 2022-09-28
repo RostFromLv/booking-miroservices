@@ -11,7 +11,7 @@ services:
       - '9411:9411'
     networks:
       - spring-network
-#POSTGRES
+  #POSTGRES
   postgres:
     container_name: postgres-db
     restart: always
@@ -25,7 +25,9 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-#GATEWAY
+    depends_on:
+      - config-server
+  #GATEWAY
   gateway:
     container_name: gateway
     build:
@@ -42,42 +44,42 @@ services:
       PAYMENTS_SERVICE_URI: http://payments-service:8085
     networks:
       - spring-network
-# HOTEL
-  hotel-service:
-    container_name: hotels-service
-    build:
-      context: ../hotels-service
-      dockerfile: Dockerfile
-    ports:
-      - "8083:8083"
-    environment:
-      ADDRESS_SERVICE_URI: http://address-service:8081
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/hotels
-      ZIPKIN_HOST: http://zipkin:9411
-    depends_on:
-      - postgres
-    networks:
-      - spring-network
-    links:
-      - gateway
-## USER
-  user-service:
-    container_name: users-service
-    build:
-      context: ../users-service
-      dockerfile: Dockerfile
-    ports:
-      - "8082:8082"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/users
-      ZIPKIN_HOST: http://zipkin:9411
-    depends_on:
-      - postgres
-    networks:
-      - spring-network
-    links:
-      - gateway
-# ADDRESS
+  # HOTEL
+#  hotel-service:
+#    container_name: hotels-service
+#    build:
+#      context: ../hotels-service
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8083:8083"
+#    environment:
+#      ADDRESS_SERVICE_URI: http://address-service:8081
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/hotels
+#      ZIPKIN_HOST: http://zipkin:9411
+#    depends_on:
+#      - postgres
+#    networks:
+#      - spring-network
+#    links:
+#      - gateway
+  ## USER
+#  user-service:
+#    container_name: users-service
+#    build:
+#      context: ../users-service
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8082:8082"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/users
+#      ZIPKIN_HOST: http://zipkin:9411
+#    depends_on:
+#      - postgres
+#    networks:
+#      - spring-network
+#    links:
+#      - gateway
+  # ADDRESS
   address-service:
     container_name: address-service
     build:
@@ -95,28 +97,28 @@ services:
     links:
       - zipkin
       - gateway
-##ORDERS
-  orders-service:
-    container_name: orders-service
-    build:
-      context: ../orders-service
-      dockerfile: Dockerfile
-    ports:
-      - "8084:8084"
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/orders
-      ZIPKIN_HOST: http://zipkin:9411
-      USERS_SERVICE_URI: http://users-service:8082
-      HOTELS_SERVICE_URI: http://hotels-service:8083
-      PAYMENT_SERVICE_URI: http://payments-service:8085
-    depends_on:
-      - postgres
-      - gateway
-    networks:
-      - spring-network
-    links:
-      - gateway
-##Payment
+  ##ORDERS
+#  orders-service:
+#    container_name: orders-service
+#    build:
+#      context: ../orders-service
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8084:8084"
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/orders
+#      ZIPKIN_HOST: http://zipkin:9411
+#      USERS_SERVICE_URI: http://users-service:8082
+#      HOTELS_SERVICE_URI: http://hotels-service:8083
+#      PAYMENT_SERVICE_URI: http://payments-service:8085
+#    depends_on:
+#      - postgres
+#      - gateway
+#    networks:
+#      - spring-network
+#    links:
+#      - gateway
+  ##Payment
   payments-service:
     container_name: payments-service
     build:
@@ -135,12 +137,22 @@ services:
       - gateway
     networks:
       - spring-network
- #Redis
+#  Redis
   redis-service:
     container_name: redis-service
     image: redis
     ports:
       - "6379:6379"
+    networks:
+      - spring-network
+  #Config-server
+  config-server:
+    container_name: config-server
+    build:
+      context: ../config-server
+      dockerfile: Dockerfile
+    ports:
+      - "8890:8890"
     networks:
       - spring-network
 

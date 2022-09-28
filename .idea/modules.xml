@@ -12,6 +12,7 @@
       <module fileurl="file://$PROJECT_DIR$/booking-common-abstract-service/common-abstract-service.iml" filepath="$PROJECT_DIR$/booking-common-abstract-service/common-abstract-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/common-dependencies/common-dependencies.iml" filepath="$PROJECT_DIR$/common-dependencies/common-dependencies.iml" />
       <module fileurl="file://$PROJECT_DIR$/common-dto/common-dto.iml" filepath="$PROJECT_DIR$/common-dto/common-dto.iml" />
+      <module fileurl="file://$PROJECT_DIR$/config-server/config-server.iml" filepath="$PROJECT_DIR$/config-server/config-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/exception-handler/exception-handler.iml" filepath="$PROJECT_DIR$/exception-handler/exception-handler.iml" />
       <module fileurl="file://$PROJECT_DIR$/spring-boot-exception-handler-starter/exception-handler-starter.iml" filepath="$PROJECT_DIR$/spring-boot-exception-handler-starter/exception-handler-starter.iml" />
       <module fileurl="file://$PROJECT_DIR$/exception-handler/exception-hendler.iml" filepath="$PROJECT_DIR$/exception-handler/exception-hendler.iml" />
