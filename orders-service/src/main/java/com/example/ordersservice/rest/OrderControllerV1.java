@@ -80,7 +80,7 @@ public class OrderControllerV1 {
     orderService.deleteAll();
   }
 
-  OrderDto processFallbackCB(Exception e) {
+  public OrderDto processFallbackCB(Exception e) {
     throw new EntityExistsException(e.getMessage());
   }
 }
