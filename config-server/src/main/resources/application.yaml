@@ -1,5 +1,5 @@
 server:
-  port: 8890
+  port: 8899
 
 spring:
   cloud:
@@ -7,6 +7,8 @@ spring:
       server:
         git:
           uri: https://github.com/RostFromLv/spring-config
+#          uri: C:\Users\Exoft-User\spring\config
           default-label: master
-          username:
-          password:
+          clone-on-start: true
+      allow-override: true
+#          clone-on-start: true
