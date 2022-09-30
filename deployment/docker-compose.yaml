@@ -119,32 +119,32 @@ services:
 #    links:
 #      - gateway
   ##Payment
-  payments-service:
-    container_name: payments-service
-    build:
-      context: ../payment-service
-      dockerfile: Dockerfile
-    ports:
-      - "8085:8085"
-    environment:
-      ZIPKIN_HOST: http://zipkin:9411
-      REDIS_HOST: redis-service
-      REDIS_PORT: 6379
-    depends_on:
-      - redis-service
-    links:
-      - zipkin
-      - gateway
-    networks:
-      - spring-network
+#  payments-service:
+#    container_name: payments-service
+#    build:
+#      context: ../payment-service
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8085:8085"
+#    environment:
+#      ZIPKIN_HOST: http://zipkin:9411
+#      REDIS_HOST: redis-service
+#      REDIS_PORT: 6379
+#    depends_on:
+#      - redis-service
+#    links:
+#      - zipkin
+#      - gateway
+#    networks:
+#      - spring-network
 #  Redis
-  redis-service:
-    container_name: redis-service
-    image: redis
-    ports:
-      - "6379:6379"
-    networks:
-      - spring-network
+#  redis-service:
+#    container_name: redis-service
+#    image: redis
+#    ports:
+#      - "6379:6379"
+#    networks:
+#      - spring-network
   #Config-server
   config-server:
     container_name: config-server
@@ -152,7 +152,7 @@ services:
       context: ../config-server
       dockerfile: Dockerfile
     ports:
-      - "8890:8890"
+      - "8899:8899"
     networks:
       - spring-network
 
