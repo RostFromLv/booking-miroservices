@@ -8,6 +8,8 @@ Before start throw docker-compose you need to build install next modules:
 - exception-handler
 - spring-boot-exception-handler-starter
 - common-dto
+
+
 And build package modules like:
 - banking-e2e
 - getaway-service
