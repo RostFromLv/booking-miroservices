@@ -25,44 +25,46 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    depends_on:
-      - config-server
   #GATEWAY
-  gateway:
-    container_name: gateway
-    build:
-      context: ../gateway-service
-      dockerfile: Dockerfile
-    ports:
-      - "8888:8888"
-    environment:
-      ZIPKIN_HOST: http://zipkin:9411
-      ADDRESS_SERVICE_URI: http://address-service:8081
-      USERS_SERVICE_URI: http://users-service:8082
-      HOTELS_SERVICE_URI: http://hotels-service:8083
-      ORDERS_SERVICE_URI: http://orders-service:8084
-      PAYMENTS_SERVICE_URI: http://payments-service:8085
-    networks:
-      - spring-network
-  # HOTEL
-#  hotel-service:
-#    container_name: hotels-service
+#  gateway:
+#    container_name: gateway
 #    build:
-#      context: ../hotels-service
+#      context: ../gateway-service
 #      dockerfile: Dockerfile
 #    ports:
-#      - "8083:8083"
+#      - "8888:8888"
 #    environment:
-#      ADDRESS_SERVICE_URI: http://address-service:8081
-#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/hotels
+#      CONFIG_SERVER: http://config-server:8890
 #      ZIPKIN_HOST: http://zipkin:9411
-#    depends_on:
-#      - postgres
+#      ADDRESS_SERVICE_URI: http://address-service:8081
+#      USERS_SERVICE_URI: http://users-service:8082
+#      HOTELS_SERVICE_URI: http://hotels-service:8083
+#      ORDERS_SERVICE_URI: http://orders-service:8084
+#      PAYMENTS_SERVICE_URI: http://payments-service:8085
 #    networks:
 #      - spring-network
+#    depends_on:
+#     - config-server
+  # HOTEL
+  hotel-service:
+    container_name: hotels-service
+    build:
+      context: ../hotels-service
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    environment:
+      CONFIG_SERVER: http://config-server:8890
+      ADDRESS_SERVICE_URI: http://address-service:8081
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/hotels
+      ZIPKIN_HOST: http://zipkin:9411
+    depends_on:
+      - address-service
+    networks:
+      - spring-network
 #    links:
 #      - gateway
-  ## USER
+  # USER
 #  user-service:
 #    container_name: users-service
 #    build:
@@ -71,10 +73,11 @@ services:
 #    ports:
 #      - "8082:8082"
 #    environment:
+#      CONFIG_SERVER: http://config-server:8890
 #      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/users
 #      ZIPKIN_HOST: http://zipkin:9411
 #    depends_on:
-#      - postgres
+#      - config-server
 #    networks:
 #      - spring-network
 #    links:
@@ -88,15 +91,16 @@ services:
     ports:
       - "8081:8081"
     environment:
+      CONFIG_SERVER: http://config-server:8890
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/booking
-      ZIPKIN_HOST: http://zipkin:9411
+    #      ZIPKIN_HOST: http://zipkin:9411
     depends_on:
-      - postgres
+      - config-server
     networks:
       - spring-network
     links:
       - zipkin
-      - gateway
+#      - gateway
   ##ORDERS
 #  orders-service:
 #    container_name: orders-service
@@ -106,14 +110,15 @@ services:
 #    ports:
 #      - "8084:8084"
 #    environment:
+#      CONFIG_SERVER: http://config-server:8890
 #      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/orders
 #      ZIPKIN_HOST: http://zipkin:9411
 #      USERS_SERVICE_URI: http://users-service:8082
 #      HOTELS_SERVICE_URI: http://hotels-service:8083
 #      PAYMENT_SERVICE_URI: http://payments-service:8085
 #    depends_on:
-#      - postgres
-#      - gateway
+#      - config-server
+##      - gateway
 #    networks:
 #      - spring-network
 #    links:
@@ -127,6 +132,7 @@ services:
 #    ports:
 #      - "8085:8085"
 #    environment:
+#      CONFIG_SERVER: http://config-server:8890
 #      ZIPKIN_HOST: http://zipkin:9411
 #      REDIS_HOST: redis-service
 #      REDIS_PORT: 6379
@@ -137,12 +143,16 @@ services:
 #      - gateway
 #    networks:
 #      - spring-network
-#  Redis
+#    Redis
 #  redis-service:
 #    container_name: redis-service
 #    image: redis
+#    environment:
+#      CONFIG_SERVER: http://config-server:8890
 #    ports:
 #      - "6379:6379"
+#    depends_on:
+#      - config-server
 #    networks:
 #      - spring-network
   #Config-server
@@ -155,7 +165,8 @@ services:
       - "8899:8899"
     networks:
       - spring-network
-
+    depends_on:
+      - postgres
 networks:
   spring-network:
     driver: bridge

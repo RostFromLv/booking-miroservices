@@ -7,8 +7,3 @@ spring:
       server:
         git:
           uri: https://github.com/RostFromLv/spring-config
-#          uri: C:\Users\Exoft-User\spring\config
-          default-label: master
-          clone-on-start: true
-      allow-override: true
-#          clone-on-start: true
