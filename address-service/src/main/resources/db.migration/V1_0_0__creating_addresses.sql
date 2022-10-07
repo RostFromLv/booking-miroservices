@@ -8,3 +8,5 @@ create table address(
     CONSTRAINT UQ_address_country_city_street_houseNumber
         UNIQUE (country,city,street,house_number)
 );
+
+INSERT  INTO address(country,city,street,house_number,postal_code) values ('Ukraine','Lviv','Kulparkenko',15,'7803654');

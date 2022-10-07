@@ -7,6 +7,3 @@ spring:
       server:
         git:
           uri: https://github.com/RostFromLv/spring-config
-          default-label: master
-          username:
-          password:

@@ -1,3 +1,8 @@
 spring:
   application:
-    name: users-service
+    name: application-users
+  config:
+    import: 'optional:configserver:'
+  cloud:
+    config:
+      uri: ${CONFIG_SERVER:http://localhost:8890}

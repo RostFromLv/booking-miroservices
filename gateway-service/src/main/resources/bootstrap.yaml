@@ -1,5 +1,7 @@
 spring:
   cloud:
+    config:
+      uri: ${CONFIG_SERVER:http://localhost:8890}
     discovery:
       client:
         simple:
@@ -14,3 +16,10 @@ spring:
                 uri: ${ORDERS_SERVICE_URI:http://localhost:8084}
             - payment-service:
                 uri: ${PAYMENTS_SERVICE_URI:http://localhost:8085}
+            - config-server:
+                uri: ${CONFIG_SERVER:http://localhost:8890}
+  application:
+    name: application-gateway
+  config:
+    import: 'optional:configserver:'
+

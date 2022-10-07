@@ -1,3 +1,8 @@
 spring:
   application:
-    name: payments-service
+    name: application-payment
+  config:
+    import: 'optional:configserver:'
+  cloud:
+      config:
+        uri: ${CONFIG_SERVER:http://localhost:8890}
