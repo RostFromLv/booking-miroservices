@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class MasterCardPaymentService implements PaymentService {
   private  final CardBalanceService cardBalanceService;
+  private final static String cardOperationException = "Exception in MasterCardPaymentService in withdraw operation";
 
   @Autowired
   MasterCardPaymentService(CardBalanceService cardBalanceService) {
@@ -20,8 +21,7 @@ public class MasterCardPaymentService implements PaymentService {
 
   @Override
   public PaymentResponse doPayment(PaymentRequest request) throws CardOperationException {
-    PaymentResponse response =
-        new PaymentResponse();
+    PaymentResponse response = new PaymentResponse();
     CardDto card = request.getCardDto();
 
     if (card.getExpirationDate()<500){
@@ -33,7 +33,7 @@ public class MasterCardPaymentService implements PaymentService {
     try {
       cardBalanceService.withdraw(card.getNumber(), request.getPrice());
     } catch (CardOperationException e) {
-      throw new CardOperationException(e.getMessage());
+      throw new CardOperationException(cardOperationException);
     }
     response.setSuccess(true);
     response.setTimestamp(System.currentTimeMillis());

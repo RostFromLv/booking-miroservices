@@ -8,21 +8,30 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.constraints.NotNull;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-public abstract class AbstractDataService<ID, E extends Convertible, D extends Convertible>
-      implements DataService<ID, D> {
+/**
+ * Default abstract service for all models.
+ *
+ * @param <Id> - id type of our entity
+ * @param <E>  - entity type for our abstract service
+ * @param <D>  - Dto type for our entity
+ */
+public abstract class AbstractDataService<@NotNull Id,@NotNull E extends Convertible,@NotNull D extends Convertible>
+    implements DataService<Id, D> {
 
   private final static String idCannotBeNull = "Id cannot be null";
   private final static String entityNotFound = "Entity with id %s doesnt exist";
 
-  protected final DtoConverter<E,D> converter = new DtoConverter(new ModelMapper());
+  protected final DtoConverter<E, D> converter = new DtoConverter(new ModelMapper());
 
-  protected JpaRepository<E, ID> repository;
+  protected JpaRepository<E, Id> repository;
 
   private final Class<D> dtoType;
 
@@ -40,35 +49,37 @@ public abstract class AbstractDataService<ID, E extends Convertible, D extends C
   @Transactional(readOnly = true)
   public Collection<D> findAll() {
     return repository.findAll()
-          .stream()
-          .map(entity -> this.converter.convertToDto(entity, this.dtoType))
-          .collect(Collectors.toList());
+        .stream()
+        .map(entity -> this.converter.convertToDto(entity, this.dtoType))
+        .collect(Collectors.toList());
   }
 
   @Override
   @Transactional(readOnly = true)
-  public Optional<D> findById(ID id) {
+  public Optional<D> findById(Id id) {
     Assert.notNull(id, idCannotBeNull);
     return repository.findById(id)
-          .map(entity -> converter.convertToDto(entity, dtoType.asSubclass(dtoType)));
+        .map(entity -> converter.convertToDto(entity, dtoType.asSubclass(dtoType)));
   }
 
   @Override
   @Transactional
-  public D create(D target) {
-    Assert.notNull(target, "Dto" + target.getClass() + " cannot be null");
-    E createdEntity = repository.save(converter.convertToEntity(target, entityType.asSubclass(entityType.asSubclass(entityType))));
+  public D create(@NotNull D target) {
+    Assert.notNull(target , "Dto" + target.getClass() + " cannot be null");
+    E createdEntity = repository.save(converter.convertToEntity(target,
+        entityType.asSubclass(entityType.asSubclass(entityType))));
     return converter.convertToDto(createdEntity, dtoType.asSubclass(dtoType));
   }
 
   @Override
   @Transactional
-  public D update(D target,ID id ) {
+  public D update(@NotNull D target, Id id) {
     Assert.notNull(target, target.getClass() + " cant be null");
-    Assert.notNull(id,idCannotBeNull);
-    E existEntity = repository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format(entityNotFound, id)));
+    Assert.notNull(id, idCannotBeNull);
+    E existEntity = repository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException(String.format(entityNotFound, id)));
 
-    converter.update(target,existEntity);
+    converter.update(target, existEntity);
 
     E updatedEntity = repository.save(existEntity);
 
@@ -77,14 +88,14 @@ public abstract class AbstractDataService<ID, E extends Convertible, D extends C
 
   @Override
   @Transactional
-  public void deleteById(ID id) {
+  public void deleteById(Id id) {
     Assert.notNull(id, idCannotBeNull);
     repository.deleteById(id);
   }
 
   @Override
   @Transactional(readOnly = true)
-  public boolean contains(ID id) {
+  public boolean contains(Id id) {
     Assert.notNull(id, idCannotBeNull);
     return repository.existsById(id);
   }
@@ -96,7 +107,7 @@ public abstract class AbstractDataService<ID, E extends Convertible, D extends C
   }
 
   @Autowired
-  public final void setRepository(JpaRepository<E, ID> repository) {
+  public final void setRepository(JpaRepository<E, Id> repository) {
     this.repository = repository;
   }
 }

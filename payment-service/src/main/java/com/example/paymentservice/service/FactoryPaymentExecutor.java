@@ -2,6 +2,7 @@ package com.example.paymentservice.service;
 
 import com.example.commondto.common.PaymentRequest;
 import com.example.commondto.common.PaymentResponse;
+import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class FactoryPaymentExecutor implements PaymentExecutor{
   }
 
   @Override
-  public PaymentResponse doPayment(PaymentRequest request) throws CardOperationException {
+  public PaymentResponse doPayment(@NotNull PaymentRequest request) throws CardOperationException {
     return serviceFactory.getPaymentService(request).doPayment(request);
   }
 }

@@ -1,6 +1,5 @@
 server:
-  port: 8899
-
+  port: 8890
 spring:
   cloud:
     config:

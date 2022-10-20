@@ -81,6 +81,6 @@ public class OrderControllerV1 {
   }
 
   public OrderDto processFallbackCB(Exception e) {
-    throw new EntityExistsException(e.getMessage());
+    throw new EntityExistsException();
   }
 }

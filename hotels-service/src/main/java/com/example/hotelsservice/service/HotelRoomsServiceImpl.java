@@ -75,7 +75,7 @@ public class HotelRoomsServiceImpl extends AbstractDataService<Integer, HotelRoo
 
     int hotelRoomDtoId = updateHotelRoomDto.getId();
 
-    HotelRoom existHotelRoom = hotelRoomRepository.findById(hotelRoomDtoId)
+    HotelRoom existHotelRoom = this.hotelRoomRepository.findById(hotelRoomDtoId)
           .orElseThrow(() -> new EntityNotFoundException(String.format(ENTITY_NOT_EXIST, hotelRoomDtoId)));
 
     dtoConverter.update(updateHotelRoomDto, existHotelRoom);

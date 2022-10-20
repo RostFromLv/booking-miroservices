@@ -18,6 +18,7 @@ import lombok.Data;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
+@SuppressWarnings("initialization.field.uninitialized")
 public class AddressDto implements Convertible {
   @NotNull(groups = {Groups.Update.class},
         message = "Shouldn`t be null")

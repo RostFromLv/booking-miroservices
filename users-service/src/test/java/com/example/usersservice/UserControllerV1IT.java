@@ -21,7 +21,7 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserControllerV1IT {
 
-  private final static int ID = 1;
+  private final static int ID = 1000;
   private final static String FIRST_NAME = "First_Name";
   private final static String LAST_NAME = "Last_Name";
   private final static String EMAIL = "email@w.com";
@@ -49,7 +49,7 @@ public class UserControllerV1IT {
   //Create
   @Test
   void createByCorrectDto_ShouldReturn_CreatedUserDto_AND_Status_201() {
-    UserDto dtoForCreating = generateCustomDto(null, FIRST_NAME, EMAIL);
+    UserDto dtoForCreating = generateCustomDto(ID, FIRST_NAME, EMAIL);
     UserDto userDto = requestJson()
           .body(dtoForCreating)
           .when()
@@ -67,10 +67,10 @@ public class UserControllerV1IT {
 
   @Test
   void createByDtoWithSameMail_ShouldThrow_EntityExistException() {
-    userService.create(generateCustomDto(null, FIRST_NAME, EMAIL));
+    userService.create(generateCustomDto(ID, FIRST_NAME, EMAIL));
 
     requestJson()
-          .body(generateCustomDto(null, "NewName", EMAIL))
+          .body(generateCustomDto(ID, "NewName", EMAIL))
           .when()
           .post()
           .then()
@@ -81,7 +81,7 @@ public class UserControllerV1IT {
   //Update
   @Test
   void updateByCorrectDto_ShouldReturn_UpdatedDto_AND_Status_200() {
-    UserDto userDto = userService.create(generateCustomDto(null, FIRST_NAME, EMAIL));
+    UserDto userDto = userService.create(generateCustomDto(ID, FIRST_NAME, EMAIL));
     UserDto userDtoForUpdate = generateCustomDto(userDto.getId(), "UpdatedName", "updated@email");
 
     UserDto updatedDto = requestJson()
@@ -101,7 +101,7 @@ public class UserControllerV1IT {
   @Test
   void updateByNullId_ShouldThrow_IllegalArgumentException() {
     requestJson()
-          .body(generateCustomDto(null, FIRST_NAME, EMAIL))
+          .body(generateCustomDto(ID, FIRST_NAME, EMAIL))
           .when()
           .put()
           .then()
@@ -112,8 +112,8 @@ public class UserControllerV1IT {
 
   @Test
   void updateByDtoWithSameEmail_ShouldThrow_EntityExistException() {
-    userService.create(generateCustomDto(null, FIRST_NAME, EMAIL));
-    UserDto secondUserDto = userService.create(generateCustomDto(null, "SecondName", "sec@mail"));
+    userService.create(generateCustomDto(ID, FIRST_NAME, EMAIL));
+    UserDto secondUserDto = userService.create(generateCustomDto(ID, "SecondName", "sec@mail"));
 
     UserDto userDtoForUpdate = generateCustomDto(secondUserDto.getId(), "newName", EMAIL);
 
@@ -139,9 +139,9 @@ public class UserControllerV1IT {
 
   @Test
   void getAll_ShouldReturn_FullList() {
-    userService.create(generateCustomDto(null, FIRST_NAME, EMAIL));
-    userService.create(generateCustomDto(null, "SecondName", "second@mail"));
-    userService.create(generateCustomDto(null, "thirdName", "third@mail"));
+    userService.create(generateCustomDto(ID, FIRST_NAME, EMAIL));
+    userService.create(generateCustomDto(ID, "SecondName", "second@mail"));
+    userService.create(generateCustomDto(ID, "thirdName", "third@mail"));
 
     request()
           .get()
@@ -155,7 +155,7 @@ public class UserControllerV1IT {
   //Get by id
   @Test
   void getByCorrectId_ShouldReturn_ExistDto() {
-    UserDto userDto = userService.create(generateCustomDto(null, FIRST_NAME, EMAIL));
+    UserDto userDto = userService.create(generateCustomDto(ID, FIRST_NAME, EMAIL));
 
     UserDto existDto = request()
           .get("/" + userDto.getId())
@@ -178,7 +178,7 @@ public class UserControllerV1IT {
   //Delete by id
   @Test
   void deleteByCorrectId_ShouldReturn_Status_204() {
-    UserDto userDto = userService.create(generateCustomDto(null, FIRST_NAME, EMAIL));
+    UserDto userDto = userService.create(generateCustomDto(ID, FIRST_NAME, EMAIL));
     request()
           .delete("/" + userDto.getId())
           .then()

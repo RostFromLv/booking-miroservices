@@ -13,6 +13,7 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.util.Collection;
 import java.util.HashSet;
+import javax.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.internal.util.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class OrderProcessorSaga implements OrderProcessor {
 
+  private final static String feignException = "Feign service exception inside order processor";
   private final HotelFeignClient hotelClient;
   private final UsersFeignClient usersClient;
   private final OrderService orderService;
@@ -51,7 +53,7 @@ public class OrderProcessorSaga implements OrderProcessor {
     target.setStatus(Status.PENDING);
     target = orderService.update(target, target.getId());
 
-    ReservationDto reservation = null;
+    ReservationDto reservation = new ReservationDto();
 
     try {
       usersClient.getById(order.getUserId());
@@ -81,7 +83,7 @@ public class OrderProcessorSaga implements OrderProcessor {
         target.setStatus(Status.REJECT);
       }
     } catch (FeignException e) {
-      errors.add(e.getMessage());
+      errors.add(feignException);
       target.setStatus(Status.REJECT);
     } catch (IllegalArgumentException e) {
       e.printStackTrace();
@@ -126,7 +128,7 @@ public class OrderProcessorSaga implements OrderProcessor {
     Assert.isTrue(days > 0);
     return days;
   }
-  public void deleteReservation(ReservationDto reservation){
+  public void deleteReservation(@NotNull ReservationDto reservation){
     if (reservation !=null){
       hotelClient.deleteReservation(reservation.getId());
     }

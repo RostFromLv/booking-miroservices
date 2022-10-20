@@ -3,6 +3,7 @@ package com.example.paymentservice.service;
 import com.example.commondto.common.CardBalance;
 import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -30,7 +31,7 @@ public class RedisCardBalanceServiceImpl implements CardBalanceService {
   }
 
   @Override
-  public Optional<CardBalance> findByNumber(String cardNumber) {
+  public Optional<CardBalance> findByNumber(@NotNull String cardNumber) {
     Assert.notNull(cardNumber, nullCardNumberMessage);
 
     Optional<CardBalance> result = Optional.ofNullable(this.ops.get(key, cardNumber));
@@ -42,23 +43,22 @@ public class RedisCardBalanceServiceImpl implements CardBalanceService {
   }
 
   @Override
-  public void add(CardBalance cardBalance) {
-
-    Assert.notNull(cardBalance, nullCardBalanceMessage);
+  public void add(@NotNull CardBalance cardBalance) {
 
     this.ops.put(key, cardBalance.getCardNumber(), cardBalance);
   }
 
   @Override
+  @SuppressWarnings("dereference.of.nullable") // because of exist check for null throw assert
   public void withdraw(String cardNumber, Double amount) throws CardOperationException {
 
     CardBalance cardBalance = this.ops.get(key, cardNumber);
-
 
     Assert.notNull(cardBalance, wrongCardNumber+ cardNumber);
     Assert.isTrue(amount>0,negativeAmount);
 
     Double balance = cardBalance.getBalance();
+    Assert.notNull(balance,"Empty balance");
     if (balance < amount) {
       throw new CardOperationException("Not enough money.Check your card cash.");
     }
@@ -67,21 +67,21 @@ public class RedisCardBalanceServiceImpl implements CardBalanceService {
   }
 
   @Override
+  @SuppressWarnings("dereference.of.nullable") // because of exist check for null throw assert
   public void replenish(String cardNumber, Double amount){
 
     CardBalance cardBalance = this.ops.get(key, cardNumber);
     Assert.notNull(cardBalance, wrongCardNumber);
     Assert.isTrue(amount>0,negativeAmount);
     Double balance = cardBalance.getBalance();
+    Assert.notNull(balance,"Empty balance");
 
     cardBalance.setBalance(balance + amount);
     this.ops.put(key, cardNumber, cardBalance);
   }
 
   @Override
-  public void remove(String cardNumber) {
-    Assert.notNull(cardNumber, nullCardNumberMessage);
-
+  public void remove(@NotNull String cardNumber) {
     if (findByNumber(cardNumber).isEmpty()){
       throw new EntityNotFoundException(wrongCardNumber+cardNumber);
     }

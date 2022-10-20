@@ -17,8 +17,8 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest
 @ActiveProfiles("test")
 public class HotelRoomServiceIT {
-  //TODO FIX
 
+  private  Integer idForGeneratingDto = 1;
   //Hotel data
   private final static Integer HOTEL_ID_1 = 1;
   private final static String HOTEL_NAME_Resort = "Resort";
@@ -49,8 +49,9 @@ public class HotelRoomServiceIT {
   @Test
   void createByCorrectRoomDto_ShouldReturn_CreatedRoomDto() {
     HotelDto createdHotel = hotelService.create(generateHotel());
+    System.out.println(createdHotel.toString());
     int hotelId = createdHotel.getId();
-    HotelRoomDto createRoomDto = generateRoom().withId(null).withHotelId(hotelId);
+    HotelRoomDto createRoomDto = generateRoom().withId(idForGeneratingDto).withHotelId(hotelId);
 
     HotelRoomDto actual = roomService.create(createRoomDto);
     Assert.notNull(actual);
@@ -65,7 +66,7 @@ public class HotelRoomServiceIT {
   void createByWrongHotelId_ShouldThrow_EntityNotFoundException() {
     org.junit.jupiter.api.Assertions.assertThrows(
           EntityNotFoundException.class,
-          () -> roomService.create(generateRoom().withId(null)));
+          () -> roomService.create(generateRoom().withId(idForGeneratingDto)));
   }
 
   //Update
@@ -86,7 +87,7 @@ public class HotelRoomServiceIT {
   @Test
   void getByCorrectId_ShouldReturn_ExistRoomDto() {
     HotelDto existHotel = hotelService.create(generateHotel());
-    HotelRoomDto roomDto = roomService.create(generateRoom().withId(null).withHotelId(existHotel.getId()));
+    HotelRoomDto roomDto = roomService.create(generateRoom().withId(idForGeneratingDto).withHotelId(existHotel.getId()));
     Assertions.assertThat(roomDto).isEqualTo(roomService.findById(roomDto.getId()).get());
   }
 
@@ -101,22 +102,22 @@ public class HotelRoomServiceIT {
   void getAll_ShouldReturn_FullList() {
     HotelDto existHotel = hotelService.create(generateHotel());
     int hotelId = existHotel.getId();
-    roomService.create(generateRoom().withId(null).withHotelId(hotelId));
-    roomService.create(generateRoom().withId(null).withHotelId(hotelId));
+    roomService.create(generateRoom().withId(idForGeneratingDto).withHotelId(hotelId));
+    roomService.create(generateRoom().withId(idForGeneratingDto).withHotelId(hotelId));
     org.junit.jupiter.api.Assertions.assertEquals(2, roomService.findAll().size());
   }
 
   @Test
   void getAll_ShouldReturn_EmptyList() {
-    HotelDto existHotel = hotelService.create(generateHotel().withId(null));
+    HotelDto existHotel = hotelService.create(generateHotel());
     org.junit.jupiter.api.Assertions.assertEquals(0, roomService.getAllRoomsByHotelId(existHotel.getId()).size());
   }
 
   @Test
   void getAllByWrongHotelId_ShouldThrow_EntityNotFoundException() {
     HotelDto existHotel = hotelService.create(generateHotel());
-    roomService.create(generateRoom().withId(null).withHotelId(existHotel.getId()));
-    org.junit.jupiter.api.Assertions.assertThrows(EntityNotFoundException.class, () -> roomService.getAllRoomsByHotelId( 1000));
+    roomService.create(generateRoom().withId(idForGeneratingDto).withHotelId(existHotel.getId()));
+    org.junit.jupiter.api.Assertions.assertThrows(EntityNotFoundException.class, () -> roomService.getAllRoomsByHotelId( idForGeneratingDto));
   }
 
   //Delete
@@ -124,7 +125,7 @@ public class HotelRoomServiceIT {
   void deleteByCorrectId_Should_VerifyCall() {
     HotelDto existHotel = hotelService.create(generateHotel());
 
-    HotelRoomDto existRoom = roomService.create(generateRoom().withId(null).withHotelId(existHotel.getId()));
+    HotelRoomDto existRoom = roomService.create(generateRoom().withId(idForGeneratingDto).withHotelId(existHotel.getId()));
     roomService.deleteById(existRoom.getId());
     org.junit.jupiter.api.Assertions.assertFalse(roomService.findById(existRoom.getId()).isPresent());
   }
@@ -155,5 +156,7 @@ public class HotelRoomServiceIT {
 
     return hotelDto;
   }
+
+
 
 }

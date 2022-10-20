@@ -9,7 +9,4 @@ public class PaymentServiceApplication {
   public static void main(String[] args) {
     SpringApplication.run(PaymentServiceApplication.class, args);
   }
-
 }
-
-//TODO докерфайли та цей сервіс, запустити через компоуз, додати колекції постмана, закинути на гітхаб

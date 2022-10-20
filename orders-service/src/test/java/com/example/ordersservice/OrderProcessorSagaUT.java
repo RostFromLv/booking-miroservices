@@ -20,6 +20,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("initialization.field.uninitialized")
 public class OrderProcessorSagaUT {
 
   @Mock
@@ -32,7 +33,7 @@ public class OrderProcessorSagaUT {
   @InjectMocks
   OrderProcessorSaga orderProcessorSaga;
 
-  private OrderDto orderDto;
+  private OrderDto orderDto = new OrderDto();
   private UserDto userDto = new UserDto();
   private ReservationDto reservationDto = new ReservationDto();
 

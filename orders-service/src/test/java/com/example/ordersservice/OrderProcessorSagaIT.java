@@ -29,15 +29,19 @@ public class OrderProcessorSagaIT {
   @Autowired
   private WireMockServer mockServer;
 
-  @Autowired
   private final HotelFeignClient hotelClient;
 
-  ReservationDto reservationDto;
+  private ReservationDto reservationDto = new ReservationDto();
+
 
   @Autowired
-  public OrderProcessorSagaIT(HotelFeignClient hotelClient) {
+  public OrderProcessorSagaIT(WireMockServer mockServer,
+                              HotelFeignClient hotelClient) {
+    this.mockServer = mockServer;
     this.hotelClient = hotelClient;
   }
+
+
 
   @BeforeEach
   void setUp() throws IOException {

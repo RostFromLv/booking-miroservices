@@ -16,6 +16,7 @@ import lombok.With;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@SuppressWarnings("initialization.fields.uninitialized")
 public class HotelRoomDto implements Convertible {
   @NotNull(message = "Id cannot be null", groups = Groups.Update.class)
   @Min(value = 1, message = "Id cannot be less than 1", groups = {Groups.Update.class})

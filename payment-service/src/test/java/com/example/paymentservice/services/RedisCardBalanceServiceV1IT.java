@@ -32,7 +32,7 @@ public class RedisCardBalanceServiceV1IT {
   @LocalServerPort
   private int port;
 
-  private CardBalance card;
+  private CardBalance card = new CardBalance();
   private Double startUpBalance = 1000.0;
   private String cardNumber = "1";
   PaymentData paymentData = new PaymentData();

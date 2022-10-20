@@ -26,7 +26,7 @@ public class RedisCardBalanceCT {
     this.cardService = cardService;
   }
 
-  private CardBalance card;
+  private CardBalance card = new CardBalance();
   private Double startUpBalance = 1000.0;
   private String cardNumber = "1";
 
@@ -49,10 +49,6 @@ public class RedisCardBalanceCT {
       Assertions.assertEquals(Optional.of(card), cardService.findByNumber(cardNumber));
   }
   @Test
-  void findByNullCardNumber_ShouldThrow_IllegalArgumentException(){
-    Assertions.assertThrows(IllegalArgumentException.class,()-> cardService.findByNumber(null));
-  }
-  @Test
   void findByWrongCardNumber_ShouldReturnNull(){
     Assertions.assertEquals(cardService.findByNumber(card.getCardNumber()+100), Optional.empty());
   }
@@ -61,10 +57,6 @@ public class RedisCardBalanceCT {
   @Test
   void addCardByCorrectData_ShouldReturn_Nothing_and_createCardBalance(){
     Assertions.assertEquals(Optional.of(card), cardService.findByNumber(card.getCardNumber()));
-  }
-  @Test
-  void addCardBalanceByNullCardBalance_ShouldThrow_IllegalArgumentException(){
-    Assertions.assertThrows(IllegalArgumentException.class,()-> cardService.add(null));
   }
   //Withdraw
   @Test
@@ -108,10 +100,6 @@ public class RedisCardBalanceCT {
     cardService.add(card.withCardNumber(newCardNumber));
     cardService.remove(newCardNumber);
     Assertions.assertTrue(cardService.findByNumber(newCardNumber).isEmpty());
-  }
-  @Test
-  void removeByNullCardBalance_ShouldThrow_IllegalArgumentException(){
-    Assertions.assertThrows(IllegalArgumentException.class,()-> cardService.remove(null));
   }
   @Test
   void removeByNotExistEntity_ShouldThrow_EntityNotFoundException(){

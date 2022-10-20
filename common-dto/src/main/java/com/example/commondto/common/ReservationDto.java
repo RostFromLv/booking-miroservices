@@ -13,6 +13,7 @@ import lombok.With;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@SuppressWarnings("initialization.field.uninitialized")
 public class ReservationDto implements Convertible {
   @NotNull
   private Integer id;

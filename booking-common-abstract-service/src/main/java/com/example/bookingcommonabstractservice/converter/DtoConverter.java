@@ -11,15 +11,15 @@ public class DtoConverter<E extends Convertible, D extends Convertible> {
   }
 
   public <E extends Convertible, D extends Convertible> D convertToDto(
-        final E entity,
-        final Class<D> dto) {
+      final E entity,
+      final Class<D> dto) {
 
     return modelMapper.map(entity, dto);
   }
 
   public <D extends Convertible, E extends Convertible> E convertToEntity(
-        final D dto,
-        final Class<E> entity) {
+      final D dto,
+      final Class<E> entity) {
     return modelMapper.map(dto, entity);
   }
 

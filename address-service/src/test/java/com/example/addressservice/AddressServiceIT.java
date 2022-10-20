@@ -4,6 +4,8 @@ import com.example.addressservice.model.AddressDto;
 import com.example.addressservice.service.AddressServiceImpl;
 import java.util.Collection;
 import javax.persistence.EntityNotFoundException;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -70,12 +72,6 @@ public class AddressServiceIT {
   }
 
   @Test
-  void createByNullDto_ShouldThrow_IllegalArgumentException() {
-        Assertions.assertThrows(NullPointerException.class, () -> addressService.create(null));
-  }
-
-
-  @Test
   void createWithConstraintViolation_ShouldThrow_DataIntegrityViolationException() {
     AddressDto newDto = new AddressDto();
     setDtoData(newDto);
@@ -109,10 +105,6 @@ public class AddressServiceIT {
     Assertions.assertEquals(addressDto, updatedDto);
   }
 
-  @Test
-  void updateByNullDto_ShouldThrow_IllegalArgumentException() {
-        Assertions.assertThrows(NullPointerException.class, () -> addressService.update(null,1));
-  }
 
   @Test
   void updateByNotExistId_ShouldThrow_EntityNotFoundException() {
@@ -156,53 +148,33 @@ public class AddressServiceIT {
         .isEqualTo(addressDto);
   }
 
-  @Test
-  void getByNullId_ShouldReturn_NullPointerException() {
-
-    Assertions.assertThrows(IllegalArgumentException.class, () -> addressService.findById(null));
-  }
-
-  @Test
-  void getByZeroId_ShouldReturn_IllegalArgumentException() {
-        Assertions.assertThrows(EntityNotFoundException.class, () -> addressService.findById(0));
-  }
-
-  @Test
-  void getByWrongId_ShouldReturn_EntityNotFoundException() {
-    EntityNotFoundException exception =
-        Assertions.assertThrows(EntityNotFoundException.class, () -> addressService.findById(8));
-    Assertions.assertInstanceOf(EntityNotFoundException.class, exception);
-  }
-
   //DELETE
   @Test
   void deleteByCorrectId_Should_ReturnLessListSize() {
     AddressDto addressDto = new AddressDto();
     setDtoData(addressDto);
     AddressDto createdDto = addressService.create(addressDto);
-    int createdDtoId = createdDto.getId();
+    Integer createdDtoId = createdDto.getId();
 
     Assertions.assertTrue(addressService.findById(createdDtoId).isPresent());
     addressService.deleteById(createdDtoId);
 
-    Assertions.assertFalse(addressService.findById(createdDtoId).isEmpty());
+    System.out.println(addressService.findById(createdDtoId).isPresent());
+    Assertions.assertFalse(addressService.findById(createdDtoId).isPresent());
   }
 
-  @Test
-  void deleteByNullId_ShouldReturn_NullPointerException() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> addressService.deleteById(null));
-
-  }
 
   @Test
   void deleteByZeroId_ShouldReturn_IllegalArgumentException() {
-        Assertions.assertThrows(EmptyResultDataAccessException.class, () -> addressService.deleteById(0));
+    Assertions.assertThrows(EmptyResultDataAccessException.class,
+        () -> addressService.deleteById(0));
   }
 
   @Test
   void deleteByWrongId_ShouldReturn_EmptyResultDataAccessException() {
 
-    Assertions.assertThrows(EmptyResultDataAccessException.class, () -> addressService.deleteById(10));
+    Assertions.assertThrows(EmptyResultDataAccessException.class,
+        () -> addressService.deleteById(10));
 
   }
 
@@ -218,7 +190,7 @@ public class AddressServiceIT {
 
 
   private void setDtoData(final AddressDto addressDto) {
-    setDtoData(addressDto, null);
+    setDtoData(addressDto, 0);
   }
 
 }
