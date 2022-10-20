@@ -7,20 +7,16 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="orders-service" />
         <module name="booking-common-abstract-service" />
-        <module name="address-service" />
-        <module name="users-service" />
         <module name="exception-handler-starter" />
         <module name="payments" />
         <module name="booking-app-router" />
         <module name="common-abstract-service" />
         <module name="spring-boot-exception-handler-starter" />
+        <module name="booking-miroservices" />
         <module name="config-server" />
         <module name="exception-handler" />
-        <module name="hotels-service" />
         <module name="booking-app-user" />
-        <module name="payment-service" />
         <module name="common-dto" />
         <module name="gateway-service" />
         <module name="exception-hendler" />
@@ -29,14 +25,35 @@
         <module name="banking-e2e" />
         <module name="booking-api-hotel" />
       </profile>
+      <profile name="Annotation profile for payments" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <option name="skipUses" value="org.slf4j\.|org\.junit\." />
+        <processor name="lombok.launch.AnnotationProcessorHider$AnnotationProcessor" />
+        <processor name="lombok.launch.AnnotationProcessorHider$ClaimingProcessor" />
+        <processor name="org.checkerframework.checker.nullness.NullnessChecker" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/checkerframework/checker/3.25.0/checker-3.25.0.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/checkerframework/checker-qual/3.25.0/checker-qual-3.25.0.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/checkerframework/checker-util/3.25.0/checker-util-3.25.0.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.22/lombok-1.18.22.jar" />
+        </processorPath>
+        <module name="orders-service" />
+        <module name="hotels-service" />
+        <module name="payment-service" />
+        <module name="address-service" />
+        <module name="users-service" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="address-service" target="11" />
+      <module name="address-service" target="1.8" />
       <module name="banking-e2e" target="11" />
       <module name="booking-api-hotel" target="1.8" />
       <module name="booking-app-router" target="1.8" />
       <module name="booking-app-user" target="1.8" />
       <module name="booking-common-abstract-service" target="11" />
+      <module name="booking-miroservices" target="11" />
       <module name="common-abstract-service" target="11" />
       <module name="common-dependencies" target="1.8" />
       <module name="common-dto" target="1.8" />
@@ -45,20 +62,19 @@
       <module name="exception-handler-starter" target="1.8" />
       <module name="exception-hendler" target="1.8" />
       <module name="gateway-service" target="1.8" />
-      <module name="hotels-service" target="1.8" />
+      <module name="hotels-service" target="11" />
       <module name="orders" target="11" />
       <module name="orders-service" target="11" />
       <module name="payment-service" target="11" />
       <module name="payments" target="11" />
       <module name="spring-boot-exception-handler-starter" target="1.8" />
-      <module name="spring-common-dependencies" target="11" />
       <module name="spring-dependencies" target="1.8" />
       <module name="users-service" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="address-service" options="-parameters" />
+      <module name="address-service" options="-parameters &quot;-AskipUses=org.slf4j\.|org\.junit\.&quot;" />
       <module name="banking-e2e" options="-parameters" />
       <module name="booking-api-hotel" options="-parameters" />
       <module name="booking-app-router" options="-parameters" />
@@ -72,14 +88,13 @@
       <module name="exception-handler-starter" options="-parameters" />
       <module name="exception-hendler" options="-parameters" />
       <module name="gateway-service" options="-parameters" />
-      <module name="hotels-service" options="-parameters" />
+      <module name="hotels-service" options="-parameters &quot;-AskipUses=org.slf4j\.|org\.junit\.&quot;" />
       <module name="orders" options="-parameters" />
-      <module name="orders-service" options="-parameters" />
-      <module name="payment-service" options="-parameters" />
+      <module name="orders-service" options="-parameters &quot;-AskipUses=org.slf4j\.|org\.junit\.&quot;" />
+      <module name="payment-service" options="-parameters &quot;-AskipUses=org.slf4j\.|org\.junit\.&quot;" />
       <module name="payments" options="-parameters" />
       <module name="spring-boot-exception-handler-starter" options="-parameters" />
-      <module name="spring-common-dependencies" options="-parameters" />
-      <module name="users-service" options="-parameters" />
+      <module name="users-service" options="-parameters &quot;-AskipUses=org.slf4j\.|org\.junit\.&quot;" />
     </option>
   </component>
 </project>

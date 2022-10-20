@@ -1,5 +1,7 @@
 package com.example.addressservice;
 
+import brave.internal.Nullable;
+import lombok.NonNull;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
@@ -12,7 +14,7 @@ import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
  */
 @SpringBootApplication
 public class AddressApplicationRunner {
-  public static void main(String[] args) {
+  public static void main( String[] args) {
     SpringApplication.run(AddressApplicationRunner.class, args);
   }
 }

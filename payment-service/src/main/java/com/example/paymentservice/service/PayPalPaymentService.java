@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 public class PayPalPaymentService implements PaymentService {
   private  final CardBalanceService cardBalanceService;
 
+  private final static String cardOperationException = "Exception in PayPalPaymentService in withdraw operation";
+
   @Autowired
   PayPalPaymentService(CardBalanceService cardBalanceService) {
     this.cardBalanceService = cardBalanceService;
@@ -34,7 +36,7 @@ public class PayPalPaymentService implements PaymentService {
     try {
       cardBalanceService.withdraw(card.getNumber(), request.getPrice());
     } catch (CardOperationException e) {
-      throw new CardOperationException(e.getMessage());
+      throw new CardOperationException(cardOperationException);
     }
 
     response.setSuccess(true);

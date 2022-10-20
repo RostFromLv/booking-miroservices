@@ -15,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @ExtendWith(MockitoExtension.class)
 public class VisaPaymentServiceUT {
@@ -28,6 +29,14 @@ public class VisaPaymentServiceUT {
 
   @InjectMocks
   VisaPaymentService paymentService;
+
+  @Autowired
+  public VisaPaymentServiceUT(
+      CardBalanceService cardBalanceService,
+      VisaPaymentService paymentService) {
+    this.cardBalanceService = cardBalanceService;
+    this.paymentService = paymentService;
+  }
 
   CardDto existCard = new CardDto();
   PaymentRequest request = new PaymentRequest();

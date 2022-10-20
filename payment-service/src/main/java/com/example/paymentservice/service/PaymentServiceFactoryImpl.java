@@ -1,6 +1,7 @@
 package com.example.paymentservice.service;
 
 import com.example.commondto.common.PaymentRequest;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +21,7 @@ public class PaymentServiceFactoryImpl implements PaymentServiceFactory {
       return new VisaPaymentService(cardBalanceService);
     } else if (cardNumber.startsWith("4")) {
       return new PayPalPaymentService(cardBalanceService);
-    } else if (cardNumber.startsWith("8")) {
-      return new MasterCardPaymentService(cardBalanceService);
     }
-    return null;
+    return new MasterCardPaymentService(cardBalanceService);
   }
 }

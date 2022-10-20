@@ -22,7 +22,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class UserServiceIT {
 
-  private static int ID = 1;
+  private static int ID = 1000;
   private static String FIRST_NAME = "FIRST_NAME";
   private static String LAST_NAME = "LAST_NAME";
   private static String PHONE_NUMBER = "123456789";
@@ -46,7 +46,7 @@ public class UserServiceIT {
   //Create
   @Test
   void createByCorrectDto_ShouldReturn_CreatedDto() {
-    UserDto userDtoForCreate = generateCustomDto(null, FIRST_NAME, EMAIL);
+    UserDto userDtoForCreate = generateCustomDto(ID, FIRST_NAME, EMAIL);
 
     UserDto createdUser = userService.create(userDtoForCreate);
     org.junit.jupiter.api.Assertions.assertNotNull(createdUser.getId());
@@ -58,39 +58,22 @@ public class UserServiceIT {
   }
 
   @Test
-  void createByNullDto_ShouldThrow_IllegalArgumentException() {
-          assertThrows(IllegalArgumentException.class, () -> userService.create(null));
-  }
-
-
-
-  @Test
   void createByExistEmail_ShouldThrow_EntityExistException() {
-    userService.create(generateCustomDto(null, FIRST_NAME, EMAIL));
+    userService.create(generateCustomDto(ID, FIRST_NAME, EMAIL));
     assertThrows(DataIntegrityViolationException.class,
-          () -> userService.create(generateCustomDto(null, "OtherName", EMAIL)));
+          () -> userService.create(generateCustomDto(ID, "OtherName", EMAIL)));
   }
 
   @Test
   void createByConstraintViolation_ShouldThrow_DataIntegrityViolationException() {
-    userService.create(generateCustomDto(null, FIRST_NAME, EMAIL));
+    userService.create(generateCustomDto(ID, FIRST_NAME, EMAIL));
 
     assertThrows(DataIntegrityViolationException.class,
-          () -> userService.create(generateCustomDto(null, FIRST_NAME, "new@mail.com")));
+          () -> userService.create(generateCustomDto(ID, FIRST_NAME, "new@mail.com")));
   }
 
   //Update
-  @Test
-  void updateByNullDto_ShouldThrow_IllegalArgumentException() {
-    IllegalArgumentException actual = assertThrows(IllegalArgumentException.class, () -> userService.update(null,ID));
-    assertInstanceOf(IllegalArgumentException.class, actual);
-  }
 
-  @Test
-  void updateByNullId_ShouldThrow_NullPointerException() {
-    assertThrows(IllegalArgumentException.class,
-          () -> userService.update(generateCustomDto(null, FIRST_NAME, EMAIL),null));
-  }
 
   @Test
   void updateByNotExistId_ShouldThrow_EntityNotFoundException() {
@@ -100,8 +83,8 @@ public class UserServiceIT {
 
   @Test
   void updateByConstraintViolation_ShouldThrow_DataIntegrityViolationException() {
-    userService.create(generateCustomDto(null, FIRST_NAME, EMAIL));
-    UserDto secondUserDto = userService.create(generateCustomDto(null, "SecondName", "second@mail"));
+    userService.create(generateCustomDto(ID, FIRST_NAME, EMAIL));
+    UserDto secondUserDto = userService.create(generateCustomDto(ID, "SecondName", "second@mail"));
 
     UserDto userDtoForUpdate = generateCustomDto(secondUserDto.getId(), FIRST_NAME, "third@mail.com");
 
@@ -111,8 +94,8 @@ public class UserServiceIT {
 
   @Test
   void updateWithExistEmail_ShouldThrow_EntityExistException() {
-    userService.create(generateCustomDto(null, FIRST_NAME, EMAIL));
-    UserDto secondUserDto = userService.create(generateCustomDto(null, "SecondName", "second@mail"));
+    userService.create(generateCustomDto(ID, FIRST_NAME, EMAIL));
+    UserDto secondUserDto = userService.create(generateCustomDto(ID, "SecondName", "second@mail"));
 
     UserDto userDtoForUpdate = generateCustomDto(secondUserDto.getId(), "Name", EMAIL);
 
@@ -121,7 +104,7 @@ public class UserServiceIT {
 
   @Test
   void updateByCorrectDto_ShouldReturn_UpdatedDto() {
-    UserDto createdUserDto = userService.create(generateCustomDto(null, FIRST_NAME, EMAIL));
+    UserDto createdUserDto = userService.create(generateCustomDto(ID, FIRST_NAME, EMAIL));
     UserDto userDtoForUpdate = generateCustomDto(createdUserDto.getId(), "Pet", "any@mail.com");
 
     UserDto actual = userService.update(userDtoForUpdate, userDtoForUpdate.getId());
@@ -134,7 +117,7 @@ public class UserServiceIT {
   //Get by id
   @Test
   void getByExistId_ShouldReturn_ExistDto() {
-    UserDto userDto = userService.create(generateCustomDto(null, FIRST_NAME, EMAIL));
+    UserDto userDto = userService.create(generateCustomDto(ID, FIRST_NAME, EMAIL));
 
     UserDto actual = userService.findById(userDto.getId()).get();
 
@@ -153,15 +136,15 @@ public class UserServiceIT {
 
   @Test
   void getAll_ShouldReturn_FullList() {
-    userService.create(generateCustomDto(null, FIRST_NAME, EMAIL));
-    userService.create(generateCustomDto(null, "NEXT_NAME", "next@mail"));
+    userService.create(generateCustomDto(ID, FIRST_NAME, EMAIL));
+    userService.create(generateCustomDto(ID, "NEXT_NAME", "next@mail"));
     assertEquals(userService.findAll().size(), 2);
   }
 
   //Delete
   @Test
   void deleteByExistId_ShouldReturn_DifferentSize() {
-    UserDto userDto = userService.create(generateCustomDto(null, FIRST_NAME, EMAIL));
+    UserDto userDto = userService.create(generateCustomDto(ID, FIRST_NAME, EMAIL));
     userRepository.deleteById(userDto.getId());
     assertFalse(userRepository.existsById(userDto.getId()));
   }
@@ -171,10 +154,6 @@ public class UserServiceIT {
           assertThrows(EmptyResultDataAccessException.class, () -> userService.deleteById(ID));
   }
 
-  @Test
-  void deleteByNullId_ShouldThrow_IllegalArgumentException() {
-          assertThrows(IllegalArgumentException.class, () -> userService.deleteById(null));
-  }
 
   private UserDto generateDto() {
     UserDto userDto = new UserDto();

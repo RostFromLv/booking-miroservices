@@ -46,22 +46,22 @@ services:
 #    depends_on:
 #     - config-server
   # HOTEL
-  hotel-service:
-    container_name: hotels-service
-    build:
-      context: ../hotels-service
-      dockerfile: Dockerfile
-    ports:
-      - "8083:8083"
-    environment:
-      CONFIG_SERVER: http://config-server:8890
-      ADDRESS_SERVICE_URI: http://address-service:8081
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/hotels
-      ZIPKIN_HOST: http://zipkin:9411
-    depends_on:
-      - address-service
-    networks:
-      - spring-network
+#  hotel-service:
+#    container_name: hotels-service
+#    build:
+#      context: ../hotels-service
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8083:8083"
+#    environment:
+#      CONFIG_SERVER: http://config-server:8890
+#      ADDRESS_SERVICE_URI: http://address-service:8081
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/hotels
+#      ZIPKIN_HOST: http://zipkin:9411
+#    depends_on:
+#      - address-service
+#    networks:
+#      - spring-network
 #    links:
 #      - gateway
   # USER
@@ -93,7 +93,7 @@ services:
     environment:
       CONFIG_SERVER: http://config-server:8890
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/booking
-    #      ZIPKIN_HOST: http://zipkin:9411
+      ZIPKIN_HOST: http://zipkin:9411
     depends_on:
       - config-server
     networks:
@@ -162,7 +162,7 @@ services:
       context: ../config-server
       dockerfile: Dockerfile
     ports:
-      - "8899:8899"
+      - "8890:8890"
     networks:
       - spring-network
     depends_on:

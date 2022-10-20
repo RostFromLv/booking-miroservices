@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 public class VisaPaymentService implements PaymentService {
 
   private  final CardBalanceService cardBalanceService;
+  private final static String cardOperationException = "Exception in VisaPaymentService in withdraw operation";
 
   @Autowired
   VisaPaymentService(CardBalanceService cardBalanceService) {
@@ -33,7 +34,7 @@ public class VisaPaymentService implements PaymentService {
     try{
       cardBalanceService.withdraw(card.getNumber(), request.getPrice());
     } catch (CardOperationException e) {
-      throw new CardOperationException(e.getMessage());
+      throw new CardOperationException(cardOperationException);
     }
     response.setSuccess(true);
     response.setTimestamp(System.currentTimeMillis());

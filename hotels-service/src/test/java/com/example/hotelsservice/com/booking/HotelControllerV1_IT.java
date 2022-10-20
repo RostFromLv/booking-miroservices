@@ -24,6 +24,7 @@ import org.springframework.test.context.ActiveProfiles;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class HotelControllerV1_IT {
 
+  private  Integer idForGeneratingDto = 1;
   private final static String ID_FIELD_DECLARATION = "id";
   //Hotel data
   private final static String hotelName = "Hotel_NAME";
@@ -42,7 +43,7 @@ public class HotelControllerV1_IT {
   private final HotelRoomsServiceImpl roomsService;
   private final RoomPriceServiceImpl roomPriceService;
 
-  private HotelDto existHotel;
+  private HotelDto existHotel = new HotelDto();
   private int hotelId;
 
   @LocalServerPort
@@ -50,12 +51,13 @@ public class HotelControllerV1_IT {
 
   @Autowired
   public HotelControllerV1_IT(
-        HotelServiceImpl hotelService,
-        HotelRoomsServiceImpl roomsService,
-        RoomPriceServiceImpl roomPriceService) {
+      HotelServiceImpl hotelService,
+      HotelRoomsServiceImpl roomsService,
+      RoomPriceServiceImpl roomPriceService) {
     this.hotelService = hotelService;
     this.roomsService = roomsService;
     this.roomPriceService = roomPriceService;
+    this.existHotel = existHotel;
   }
 
   @BeforeEach
@@ -75,42 +77,42 @@ public class HotelControllerV1_IT {
   //Create hotel
   @Test
   void createHotelByCorrectDto_ShouldReturn_createdHotelDto_And_Status201() {
-    HotelDto newHotel = generateHotel().withId(null).withAddressId(150);
+    HotelDto newHotel = generateHotel().withId(idForGeneratingDto).withAddressId(150);
     HotelDto actual = requestJson()
-          .body(newHotel)
-          .when()
-          .post()
-          .then()
-          .statusCode(201)
-          .extract()
-          .as(HotelDto.class);
+        .body(newHotel)
+        .when()
+        .post()
+        .then()
+        .statusCode(201)
+        .extract()
+        .as(HotelDto.class);
 
     Assertions.assertThat(actual)
-          .usingRecursiveComparison()
-          .ignoringFields(ID_FIELD_DECLARATION)
-          .isEqualTo(newHotel);
+        .usingRecursiveComparison()
+        .ignoringFields(ID_FIELD_DECLARATION)
+        .isEqualTo(newHotel);
   }
 
   @Test
   void createHotelByNotNullDtoId_ShouldThrow_IllegalArgumentException() {
     HotelDto wrongHotelDto = generateHotel().withId(1).withAddressId(150);
     requestJson()
-          .body(wrongHotelDto)
-          .when()
-          .post()
-          .then()
-          .statusCode(400);
+        .body(wrongHotelDto)
+        .when()
+        .post()
+        .then()
+        .statusCode(400);
   }
 
   @Test
   void createHotelWithSameAddressId_ShouldThrow_ConstraintViolationException() {
-    HotelDto dtoWithSameAddress = generateHotel().withId(null).withName("NewName");
+    HotelDto dtoWithSameAddress = generateHotel().withId(idForGeneratingDto).withName("NewName");
     requestJson()
-          .body(dtoWithSameAddress)
-          .when()
-          .post()
-          .then()
-          .statusCode(409);
+        .body(dtoWithSameAddress)
+        .when()
+        .post()
+        .then()
+        .statusCode(409);
   }
 
   //Update hotel
@@ -118,13 +120,13 @@ public class HotelControllerV1_IT {
   void updateHotelByCorrectDto_ShouldReturn_UpdatedDto_And_Status200() {
     HotelDto dtoForUpdate = generateHotel().withId(hotelId).withAddressId(15);
     HotelDto updatedDto = requestJson()
-          .body(dtoForUpdate)
-          .when()
-          .put()
-          .then()
-          .statusCode(200)
-          .extract()
-          .as(HotelDto.class);
+        .body(dtoForUpdate)
+        .when()
+        .put()
+        .then()
+        .statusCode(200)
+        .extract()
+        .as(HotelDto.class);
     org.junit.jupiter.api.Assertions.assertEquals(updatedDto, dtoForUpdate);
   }
 
@@ -132,11 +134,11 @@ public class HotelControllerV1_IT {
   void updateHotelByWrongHotelId_ShouldThrow_EntityNotFoundException() {
     HotelDto dtoForUpdate = generateHotel().withId(150);
     requestJson()
-          .body(dtoForUpdate)
-          .when()
-          .put()
-          .then()
-          .statusCode(404);
+        .body(dtoForUpdate)
+        .when()
+        .put()
+        .then()
+        .statusCode(404);
   }
 
 
@@ -145,88 +147,88 @@ public class HotelControllerV1_IT {
   void getAllHotels_ShouldReturn_EmptyList() {
     hotelService.deleteAll();
     request()
-          .when()
-          .get()
-          .then()
-          .statusCode(200)
-          .and()
-          .assertThat()
-          .body("size()", Matchers.is(0));
+        .when()
+        .get()
+        .then()
+        .statusCode(200)
+        .and()
+        .assertThat()
+        .body("size()", Matchers.is(0));
   }
 
   @Test
   void getAllHotels_ShouldReturn_FullList() {
     hotelService.create(generateHotel().withAddressId(100));
     request()
-          .when()
-          .get()
-          .then()
-          .statusCode(200)
-          .and()
-          .body("size()", Matchers.is(2));
+        .when()
+        .get()
+        .then()
+        .statusCode(200)
+        .and()
+        .body("size()", Matchers.is(2));
   }
 
   //Get by id hotel
   @Test
   void getHotelById_ShouldReturn_ExistHotel_And_Status_200() {
     HotelDto actual = request()
-          .when()
-          .get("/" + hotelId)
-          .then()
-          .statusCode(200)
-          .extract()
-          .as(HotelDto.class);
+        .when()
+        .get("/" + hotelId)
+        .then()
+        .statusCode(200)
+        .extract()
+        .as(HotelDto.class);
     Assertions.assertThat(actual).isEqualTo(existHotel);
   }
 
   @Test
   void getHotelByWrongId_ShouldThrow_EntityNotFoundException() {
     request()
-          .when()
-          .get("/1")
-          .then()
-          .statusCode(404);
+        .when()
+        .get("/1")
+        .then()
+        .statusCode(404);
   }
 
   //Delete hotel
   @Test
   void deleteHotelByCorrectId_ShouldReturn_Status204() {
     request()
-          .when()
-          .delete("/" + hotelId)
-          .then()
-          .statusCode(204);
+        .when()
+        .delete("/" + hotelId)
+        .then()
+        .statusCode(204);
   }
 
   @Test
   void deleteHotelByWrongId_ShouldThrow_EntityNotFoundException() {
     request()
-          .when()
-          .delete("/" + (hotelId + 100))
-          .then()
-          .statusCode(404);
+        .when()
+        .delete("/" + (hotelId + 100))
+        .then()
+        .statusCode(404);
   }
 
   //Create room----------------------------
 
   @Test
   void createRoomByCorrectDto_ShouldReturn_CreatedDto_And_Status201() {
-    HotelRoomDto roomForCreate = generateRoom().withId(null).withHotelId(hotelId);
+    HotelRoomDto roomForCreate = generateRoom().withId(idForGeneratingDto).withHotelId(hotelId);
 
     HotelRoomDto actual = requestJson()
-          .body(roomForCreate)
-          .when()
-          .post("/rooms")
-          .then()
-          .statusCode(201)
-          .and()
-          .extract()
-          .as(HotelRoomDto.class);
+        .body(roomForCreate)
+        .when()
+        .post("/rooms")
+        .then()
+        .statusCode(201)
+        .and()
+        .extract()
+        .as(HotelRoomDto.class);
 
     Assertions.assertThat(actual)
-          .usingRecursiveComparison()
-          .ignoringFields(ID_FIELD_DECLARATION)
-          .isEqualTo(roomForCreate);
+        .usingRecursiveComparison()
+        .ignoringFields(ID_FIELD_DECLARATION)
+        .isEqualTo(roomForCreate);
 
   }
 
@@ -235,41 +237,41 @@ public class HotelControllerV1_IT {
     HotelRoomDto roomForCreate = generateRoom();
 
     requestJson()
-          .body(roomForCreate)
-          .when()
-          .post( "/rooms")
-          .then()
-          .statusCode(400);
+        .body(roomForCreate)
+        .when()
+        .post("/rooms")
+        .then()
+        .statusCode(400);
   }
 
   //Update room
   @Test
   void updateRoomByCorrectId_ShouldReturn_updatedRoomDto_And_Status200() {
-    HotelRoomDto createdRoom = roomsService.create(generateRoom().withId(null));
-    HotelRoomDto dtoForUpdate = generateRoom().withId(createdRoom.getId()).withHotelId(null);
+    HotelRoomDto createdRoom = roomsService.create(generateRoom().withId(idForGeneratingDto));
+    HotelRoomDto dtoForUpdate = generateRoom().withId(createdRoom.getId()).withHotelId(idForGeneratingDto);
 
     HotelRoomDto actual = requestJson()
-          .body(dtoForUpdate)
-          .when()
-          .put( "/rooms")
-          .then()
-          .statusCode(200)
-          .extract()
-          .as(HotelRoomDto.class);
+        .body(dtoForUpdate)
+        .when()
+        .put("/rooms")
+        .then()
+        .statusCode(200)
+        .extract()
+        .as(HotelRoomDto.class);
 
     Assertions.assertThat(actual).isEqualTo(dtoForUpdate.withHotelId(existHotel.getId()));
   }
 
   @Test
   void updateRoomByWrongRoomId_ShouldThrow_EntityNotFoundException() {
-    HotelRoomDto dtoForUpdate = generateRoom().withId(500).withHotelId(null);
+    HotelRoomDto dtoForUpdate = generateRoom().withId(500).withHotelId(idForGeneratingDto);
 
     requestJson()
-          .body(dtoForUpdate)
-          .when()
-          .put( "/rooms")
-          .then()
-          .statusCode(404);
+        .body(dtoForUpdate)
+        .when()
+        .put("/rooms")
+        .then()
+        .statusCode(404);
   }
 
 
@@ -277,41 +279,41 @@ public class HotelControllerV1_IT {
   @Test
   void getAllRoom_ShouldReturn_EmptyList() {
     request()
-          .when()
-          .get( "/rooms")
-          .then()
-          .statusCode(200)
-          .and()
-          .body("size()", Matchers.is(0));
+        .when()
+        .get("/rooms")
+        .then()
+        .statusCode(200)
+        .and()
+        .body("size()", Matchers.is(0));
 
   }
 
   @Test
   void getAllRoom_ShouldReturn_FullList() {
-    roomsService.create(generateRoom().withId(null));
-    roomsService.create(generateRoom().withId(null));
+    roomsService.create(generateRoom().withId(idForGeneratingDto));
+    roomsService.create(generateRoom().withId(1001));
 
     request().when()
-          .get( "/rooms")
-          .then()
-          .statusCode(200)
-          .and()
-          .body("size()", Matchers.is(2));
+        .get("/rooms")
+        .then()
+        .statusCode(200)
+        .and()
+        .body("size()", Matchers.is(2));
 
   }
 
   //Get by id room
   @Test
   void getRoomByCorrectId_ShouldReturn_ExistRoomDto_And_Status200() {
-    HotelRoomDto existRoom = roomsService.create(generateRoom().withId(null));
+    HotelRoomDto existRoom = roomsService.create(generateRoom().withId(idForGeneratingDto));
 
     HotelRoomDto actual = request()
-          .when()
-          .get("/rooms/" + existRoom.getId())
-          .then()
-          .statusCode(200)
-          .extract()
-          .as(HotelRoomDto.class);
+        .when()
+        .get("/rooms/" + existRoom.getId())
+        .then()
+        .statusCode(200)
+        .extract()
+        .as(HotelRoomDto.class);
 
     org.junit.jupiter.api.Assertions.assertEquals(existRoom, actual);
   }
@@ -319,30 +321,30 @@ public class HotelControllerV1_IT {
   @Test
   void getRoomByWrongId_ShouldThrow_EntityNotFoundException() {
     request().when()
-          .get("/rooms/" + 1)
-          .then()
-          .statusCode(404);
+        .get("/rooms/" + 1)
+        .then()
+        .statusCode(404);
   }
 
 
   //Delete by id room
   @Test
   void deleteByCorrectDto_ShouldReturn_Status204() {
-    HotelRoomDto existRoom = roomsService.create(generateRoom().withId(null));
+    HotelRoomDto existRoom = roomsService.create(generateRoom().withId(idForGeneratingDto));
     request()
-          .when()
-          .delete("/rooms/" + existRoom.getId())
-          .then()
-          .statusCode(204);
+        .when()
+        .delete("/rooms/" + existRoom.getId())
+        .then()
+        .statusCode(204);
   }
 
   @Test
   void deleteByWrongId_ShouldThrow_EntityNotFoundException() {
     request()
-          .when()
-          .delete( "/rooms/" + 1)
-          .then()
-          .statusCode(404);
+        .when()
+        .delete("/rooms/" + 1)
+        .then()
+        .statusCode(404);
   }
 
 
@@ -351,18 +353,19 @@ public class HotelControllerV1_IT {
   @Test
   void createRoomPriceByCorrectData_ShouldReturn_Status201_and_CreatedRoomPriceDto() {
     //
-    HotelDto hotelDto = hotelService.create(generateHotel().withId(null).withAddressId(1));
-    HotelRoomDto roomDto = roomsService.create(generateRoom().withId(null).withHotelId(hotelDto.getId()));
+    HotelDto hotelDto = hotelService.create(generateHotel().withId(idForGeneratingDto).withAddressId(1));
+    HotelRoomDto roomDto =
+        roomsService.create(generateRoom().withId(idForGeneratingDto).withHotelId(hotelDto.getId()));
 
     RoomPriceDto actual = requestJson()
-          .body(createRoomPriceDto())
-          .when()
-          .post("/prices")
-          .then()
-          .statusCode(201)
-          .and()
-          .extract()
-          .as(RoomPriceDto.class);
+        .body(createRoomPriceDto())
+        .when()
+        .post("/prices")
+        .then()
+        .statusCode(201)
+        .and()
+        .extract()
+        .as(RoomPriceDto.class);
 
     org.junit.jupiter.api.Assertions.assertNotNull(actual);
     org.junit.jupiter.api.Assertions.assertEquals(actual.getPrice(), roomPrice);
@@ -372,23 +375,23 @@ public class HotelControllerV1_IT {
 
   @Test
   void updateByCorrectData_ShouldReturn_Status200_and_updatedRoomPriceDto() {
-    HotelRoomDto roomDto = roomsService.create(generateRoom().withId(null).withHotelId(hotelId));
+    HotelRoomDto roomDto = roomsService.create(generateRoom().withId(idForGeneratingDto).withHotelId(hotelId));
     RoomPriceDto createdPrice = roomPriceService.create(createRoomPriceDto());
 //
-          RoomPriceDto actual = requestJson()
-          .body(createdPrice.withPrice(roomPrice+100).withEndDate(null).withStartDate(null))
-          .when()
-          .put("/prices")
-          .then()
-          .statusCode(200)
-          .extract()
-          .as(RoomPriceDto.class);
+    RoomPriceDto actual = requestJson()
+        .body(createdPrice.withPrice(roomPrice + 100).withEndDate(5l).withStartDate(1l))
+        .when()
+        .put("/prices")
+        .then()
+        .statusCode(200)
+        .extract()
+        .as(RoomPriceDto.class);
 
     org.junit.jupiter.api.Assertions.assertNotNull(actual);
     Assertions.assertThat(actual)
-          .usingRecursiveComparison()
-          .ignoringFields("price","endDate")
-          .isEqualTo(createdPrice);
+        .usingRecursiveComparison()
+        .ignoringFields("price", "endDate")
+        .isEqualTo(createdPrice);
 
   }
 
@@ -396,53 +399,56 @@ public class HotelControllerV1_IT {
   @Test
   void getByCorrectId_ShouldReturn_existRoomPriceDto_and_Status200() {
     HotelDto hotelDto = hotelService.create(generateHotel().withAddressId(1));
-    HotelRoomDto roomDto = roomsService.create(generateRoom().withId(null).withHotelId(hotelDto.getId()));
+    HotelRoomDto roomDto =
+        roomsService.create(generateRoom().withId(idForGeneratingDto).withHotelId(hotelDto.getId()));
     RoomPriceDto createdRoomPriceDto = roomPriceService.create(createRoomPriceDto());
 //
     RoomPriceDto actual = request().when()
-          .get("/prices/"+ createdRoomPriceDto.getId())
-          .then()
-          .statusCode(200)
-          .and()
-          .extract()
-          .as(RoomPriceDto.class);
+        .get("/prices/" + createdRoomPriceDto.getId())
+        .then()
+        .statusCode(200)
+        .and()
+        .extract()
+        .as(RoomPriceDto.class);
 
-    org.junit.jupiter.api.Assertions.assertEquals(actual,createdRoomPriceDto);
+    org.junit.jupiter.api.Assertions.assertEquals(actual, createdRoomPriceDto);
 
   }
 
   @Test
   void getByWrongId_ShouldThrow_status404() {
-     request().when()
-          .get("/prices/1")
-          .then()
-          .statusCode(404);
+    request().when()
+        .get("/prices/1")
+        .then()
+        .statusCode(404);
   }
 
   //Delete
   @Test
   void deleteByCorrectId_ShouldReturn_status204() {
     HotelDto hotelDto = hotelService.create(generateHotel().withAddressId(1));
-    HotelRoomDto roomDto = roomsService.create(generateRoom().withId(null).withHotelId(hotelDto.getId()));
+    HotelRoomDto roomDto =
+        roomsService.create(generateRoom().withId(idForGeneratingDto).withHotelId(hotelDto.getId()));
     RoomPriceDto createdRoomPriceDto = roomPriceService.create(createRoomPriceDto());
 //
     request().when()
-          .delete("/prices/"+createdRoomPriceDto.getId())
-          .then()
-          .statusCode(204);
+        .delete("/prices/" + createdRoomPriceDto.getId())
+        .then()
+        .statusCode(204);
   }
 
   @Test
   void deleteByWrongId_ShouldThrow_Status404() {
     request().when()
-          .delete("/prices/1")
-          .then()
-          .statusCode(404);
+        .delete("/prices/1")
+        .then()
+        .statusCode(404);
   }
 
   private HotelDto generateHotel() {
     HotelDto hotel = new HotelDto();
 
+    hotel.setId(idForGeneratingDto++);
     hotel.setAddressId(addressId);
     hotel.setName(hotelName);
 

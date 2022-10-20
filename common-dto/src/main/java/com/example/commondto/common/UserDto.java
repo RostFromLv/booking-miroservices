@@ -13,16 +13,14 @@ import lombok.Data;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
+@SuppressWarnings("initialization.field.uninitialized")
 public class UserDto implements Convertible {
 
-  @Min(value = 1,
-      message = "Id cannot be less than 0")
-  @NotNull(groups = {Groups.Update.class},
-      message = "Id cannot be null")
+  @Min(value = 1, message = "Id cannot be less than 0")
+  @NotNull(groups = {Groups.Update.class}, message = "Id cannot be null")
   private Integer id;
 
-  @NotBlank(groups = {Groups.Create.class,
-      Groups.Update.class}, message = "First name cannot be blank")
+  @NotBlank(groups = {Groups.Create.class, Groups.Update.class}, message = "First name cannot be blank")
   private String firstName;
 
   @NotBlank(groups = {Groups.Create.class,

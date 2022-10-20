@@ -4,5 +4,5 @@ spring:
   config:
     import: 'optional:configserver:'
   cloud:
-      config:
-        uri: ${CONFIG_SERVER:http://localhost:8890}
+    config:
+      uri: ${CONFIG_SERVER:http://localhost:8890}

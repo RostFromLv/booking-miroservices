@@ -18,8 +18,10 @@ import lombok.With;
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class HotelDto implements Convertible {
+
+
   @NotNull(message = "Id cannot be null", groups = Groups.Update.class)
-  @Min(value = 1,message = "Id cannot be less than 1", groups = {Groups.Create.class})
+  @Min(value = 1, message = "Id cannot be less than 1", groups = {Groups.Create.class})
   private Integer id;
 
   @NotNull(message = "Name cannot be blank")

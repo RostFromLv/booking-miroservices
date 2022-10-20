@@ -6,6 +6,7 @@ import com.example.addressservice.service.AddressServiceImpl;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
+import javax.validation.constraints.NotNull;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -53,7 +54,7 @@ public class AddressControllerV1IT {
     Integer addressId = savedAddress.getId();
 
     Assertions.assertNotNull(addressId);
-    Assertions.assertTrue(this.addressService.findById(addressId).isEmpty());
+    Assertions.assertTrue( this.addressService.findById(addressId).isPresent());
 
     this.request()
         .when()

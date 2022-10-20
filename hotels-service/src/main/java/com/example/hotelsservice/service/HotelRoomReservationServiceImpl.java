@@ -3,6 +3,7 @@ package com.example.hotelsservice.service;
 import com.example.bookingcommonabstractservice.service.AbstractDataService;
 import com.example.commondto.common.ReservationDto;
 import com.example.hotelsservice.domain.Reservation;
+import javax.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -18,8 +19,7 @@ public class HotelRoomReservationServiceImpl extends AbstractDataService<Integer
 
 
   @Override
-  public ReservationDto create(ReservationDto target) {
-    Assert.notNull(target, nullReservationMessage);
+  public ReservationDto create(@NotNull ReservationDto target) {
     Assert.isTrue(target.getDateFrom() < target.getDateTo(), wrongDatesReservationMessage);
     findAll().forEach(reservationDto -> existSameReservation(reservationDto, target));
     return super.create(target);

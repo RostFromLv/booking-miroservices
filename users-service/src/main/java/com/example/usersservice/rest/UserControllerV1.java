@@ -5,6 +5,7 @@ import com.example.usersservice.model.Groups;
 import com.example.usersservice.service.UserService;
 import com.example.usersservice.service.UserServiceImpl;
 import java.util.Collection;
+import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -53,6 +54,7 @@ public class UserControllerV1 {
   @ResponseStatus(HttpStatus.CREATED)
   public UserDto create(@RequestBody
                         @Validated(value = Groups.Create.class) final UserDto userDto) {
+    System.out.println(userDto);
     return userService.create(userDto);
   }
 

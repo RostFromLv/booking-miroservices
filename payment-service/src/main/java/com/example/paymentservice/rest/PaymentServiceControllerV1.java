@@ -7,6 +7,7 @@ import com.example.commondto.common.PaymentResponse;
 import com.example.paymentservice.service.CardBalanceService;
 import com.example.paymentservice.service.CardOperationException;
 import com.example.paymentservice.service.PaymentExecutor;
+import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,7 +35,7 @@ public class PaymentServiceControllerV1 {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public PaymentResponse doPayment(@RequestBody PaymentRequest request) throws
+  public PaymentResponse doPayment(@RequestBody @NotNull  PaymentRequest request) throws
       CardOperationException {
     return executor.doPayment(request);
   }
