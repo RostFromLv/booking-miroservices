@@ -17,7 +17,7 @@ spring:
             - payment-service:
                 uri: ${PAYMENTS_SERVICE_URI:http://localhost:8085}
             - config-server:
-                uri: ${CONFIG_SERVER:http://localhost:8890}
+                uri: ${CONFIG_SERVER:http://localhost:8889}
   application:
     name: application-gateway
   config:
